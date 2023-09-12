@@ -1,0 +1,29 @@
+server:
+  port: 7008
+  servlet:
+    context-path: /api/v1
+    session:
+      timeout: 600s
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:8320/music
+    username: zhmot
+    password: secretische
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
