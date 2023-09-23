@@ -28,6 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     
     implementation("org.hibernate:hibernate-core:5.6.14.Final")
     implementation("org.hibernate:hibernate-entitymanager:5.6.14.Final")
