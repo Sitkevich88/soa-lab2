@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "album")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@XmlRootElement
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

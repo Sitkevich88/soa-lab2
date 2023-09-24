@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.soa.entity.MusicGenre;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

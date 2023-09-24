@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
@@ -16,6 +17,7 @@ import javax.validation.constraints.DecimalMax;
 @NoArgsConstructor
 @Data
 @ToString
+@XmlRootElement
 public class Coordinates {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

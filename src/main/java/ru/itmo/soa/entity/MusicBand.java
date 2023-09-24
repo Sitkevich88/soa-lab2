@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "music_band")
@@ -15,6 +16,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Data
 @ToString
+@XmlRootElement
 public class MusicBand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
