@@ -28,17 +28,17 @@ public class MusicBand {
     @ManyToOne(cascade = CascadeType.ALL) //todo orphanRemoval = true
     @JoinColumn(nullable = false)
     private Coordinates coordinates; //Поле не может быть null
-    
+
     @Column(name = "creation_date", nullable = false, columnDefinition = "TIMESTAMP")
     private java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    
+
     @Positive
     @Column(name = "number_of_participants")
     private int numberOfParticipants; //Значение поля должно быть больше 0
 
     @Column(name = "description")
     private String description; //Поле может быть null
-    
+
     @Column(name = "establishment_date", nullable = false, columnDefinition = "DATE")
     private java.time.LocalDate establishmentDate; //Поле не может быть null
 

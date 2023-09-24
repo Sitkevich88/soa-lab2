@@ -37,9 +37,9 @@ public class MusicBandController {
     public ResponseEntity<MusicBand> createMusicBand(@RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.createMusicBand(musicBandDTO);
     }
-    
+
     @PutMapping(path = "/{id}")
-    public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO){
+    public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.updateMusicBand(id, musicBandDTO);
     }
 

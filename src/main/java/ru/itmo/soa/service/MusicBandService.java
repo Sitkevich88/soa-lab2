@@ -11,9 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.itmo.soa.dto.MusicBandDTO;
 import ru.itmo.soa.entity.MusicBand;
+import ru.itmo.soa.entity.MusicGenre;
 import ru.itmo.soa.repo.MusicBandRepository;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class MusicBandService {
@@ -80,6 +84,30 @@ public class MusicBandService {
         } catch (Throwable e) {
             logger.warn("Cannot update musicBand", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    public Double getAverageNumberOfParticipants() {
+        return musicBandRepository.findAverageNumberOfParticipants();
+    }
+
+    public List<MusicGenre> getAllGenres() {
+        return List.of(MusicGenre.values());
+    }
+
+    public ResponseEntity<?> deleteMusicBandByEstablishmentDate(String establishmentDateString) {
+        LocalDate establishmentDate;
+        try {
+            establishmentDate = LocalDate.parse(establishmentDateString);
+        } catch (DateTimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        if (musicBandRepository.existsByEstablishmentDate(establishmentDate)) {
+            musicBandRepository.deleteByEstablishmentDate(establishmentDate);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
