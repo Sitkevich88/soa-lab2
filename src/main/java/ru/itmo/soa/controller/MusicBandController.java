@@ -23,13 +23,28 @@ public class MusicBandController {
     public Page<MusicBand> getAllMusicBands(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "sort", defaultValue = "id") String sort){
+            @RequestParam(name = "sort", defaultValue = "id") String sort) {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sort));
         return musicBandService.getAllMusicBands(pageable);
     }
-    
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<MusicBand> getMusicBand(@PathVariable long id) {
+        return musicBandService.getMusicBand(id);
+    }
+
     @PostMapping
-    public ResponseEntity<MusicBand> createMusicBand(@RequestBody MusicBandDTO musicBandDTO){
+    public ResponseEntity<MusicBand> createMusicBand(@RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.createMusicBand(musicBandDTO);
+    }
+    
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO){
+        return musicBandService.updateMusicBand(id, musicBandDTO);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteMusicBand(@PathVariable long id) {
+        return musicBandService.deleteMusicBand(id);
     }
 }

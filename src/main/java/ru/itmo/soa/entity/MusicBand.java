@@ -25,7 +25,7 @@ public class MusicBand {
     @Column(name = "name")
     private String name; //Поле не может быть null, Строка не может быть пустой
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL) //todo orphanRemoval = true
     @JoinColumn(nullable = false)
     private Coordinates coordinates; //Поле не может быть null
     
