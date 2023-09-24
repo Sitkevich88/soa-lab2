@@ -1,1 +1,1 @@
-rootProject.name = "lab1"
+rootProject.name = "lab1" //todo rename to soa-lab

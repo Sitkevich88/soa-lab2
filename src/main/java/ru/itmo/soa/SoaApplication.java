@@ -1,4 +1,4 @@
-package ru.itmo.lab1;
+package ru.itmo.soa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 @EntityScan
 @SpringBootApplication
-public class Lab1Application {
+public class SoaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Lab1Application.class, args);
+        SpringApplication.run(SoaApplication.class, args);
     }
 
 }

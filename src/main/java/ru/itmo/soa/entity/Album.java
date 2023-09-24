@@ -1,5 +1,6 @@
-package ru.itmo.lab1.entity;
+package ru.itmo.soa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
 
     @NotBlank
@@ -34,4 +36,20 @@ public class Album {
     @Positive
     @Column(name = "sales", nullable = false)
     private Integer sales; //Значение поля должно быть больше 0
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    private MusicBand musicBand;
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tracks=" + tracks +
+                ", length=" + length +
+                ", sales=" + sales +
+                ", musicBand=" + musicBand.getName() +
+                '}';
+    }
 }
