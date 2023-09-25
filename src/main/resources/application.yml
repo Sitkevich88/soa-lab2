@@ -4,6 +4,8 @@ server:
     context-path: / #todo /api/v1
     session:
       timeout: 600s
+  error:
+    include-message: always
 
 spring:
   datasource:

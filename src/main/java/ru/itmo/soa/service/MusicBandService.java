@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
 import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.entity.MusicGenre;
@@ -45,7 +46,7 @@ public class MusicBandService {
             return ResponseEntity.status(HttpStatus.CREATED).body(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot create musicBand", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "MusicBand is invalid");
         }
     }
 
@@ -54,8 +55,8 @@ public class MusicBandService {
 
         return musicBand
                 .map(ResponseEntity::ok)
-                .orElseGet(() ->
-                        ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found")
                 );
     }
 
@@ -64,13 +65,13 @@ public class MusicBandService {
             musicBandRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
     }
 
     public ResponseEntity<MusicBand> updateMusicBand(long id, MusicBandDTO musicBandDTO) {
         if (!musicBandRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
 
         MusicBand musicBand = modelMapper.map(musicBandDTO, MusicBand.class);
@@ -83,7 +84,7 @@ public class MusicBandService {
             return ResponseEntity.ok(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot update musicBand", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "MusicBand is invalid");
         }
     }
 
@@ -100,14 +101,14 @@ public class MusicBandService {
         try {
             establishmentDate = LocalDate.parse(establishmentDateString);
         } catch (DateTimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Establishment Date is invalid");
         }
 
         if (musicBandRepository.existsByEstablishmentDate(establishmentDate)) {
             musicBandRepository.deleteByEstablishmentDate(establishmentDate);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
     }
 }
