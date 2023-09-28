@@ -453,15 +453,23 @@ components:
 
     Error:
       type: object
+      xml:
+        name: Map
       properties:
-        code:
+        timestamp:
+          type: string
+          format: date-time
+          example: 2023-09-28T20:48:09.641+00:00
+        status:
           type: integer
           format: int32
           example: 500
+        error:
+          type: string
+          example: Серверу хана.
         message:
           type: string
           example: Серверу хана.
-        time:
+        path:
           type: string
-          format: date-time
-          example: 2023-09-19T00:00:09Z
+          example: /
