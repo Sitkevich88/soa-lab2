@@ -11,7 +11,7 @@ public class GrammyService {
         return null;
     }
 
-    public ResponseEntity<?> addSingle(AlbumDTO album) {
+    public ResponseEntity<?> addSingle(long bandId, AlbumDTO album) {
         //todo
         return null;
     }

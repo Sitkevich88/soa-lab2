@@ -17,7 +17,7 @@ public class BandController {
     
     @PostMapping(path = "/{id}/singles/add")
     public ResponseEntity<?> addSingle(@PathVariable long id, AlbumDTO album){
-        return grammyService.addSingle(album);
+        return grammyService.addSingle(id, album);
     }
 
     @PostMapping(path = "/{id}/participants/add")
