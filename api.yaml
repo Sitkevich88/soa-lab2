@@ -1,0 +1,467 @@
+openapi: 3.0.0
+info:
+  title: MusicBands API
+  version: 1.0.0
+tags:
+  - name: Music Bands
+    description: Операции с музыкальными группами
+  - name: Доп операции
+    description: дополнительные операции
+servers:
+  - description: Development
+    url: http://localhost:7008
+
+paths:
+  /musicbands-util/bands:
+    delete:
+      tags:
+        - Доп операции
+      summary: Удалить один (любой) объект, значение поля establishmentDate которого эквивалентно заданному
+      parameters:
+        - name: establishmentDate
+          in: query
+          description: Дата создания
+          required: true
+          schema:
+            type: string
+            format: date
+            example: 2022-02-01
+      responses:
+        '204':
+          description: Успешное удаление
+        '404':
+          description: Элемент не найден
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Переданы данные, нарушающие ограничения целостности
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /musicbands-util/average-number-of-participants:
+    post:
+      tags:
+        - Доп операции
+      summary: Рассчитать среднее значение поля numberOfParticipants для всех объектов.
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/xml:
+              schema:
+                xml:
+                  name: Answer
+                type: object
+                properties:
+                  average:
+                    type: number
+                    format: float
+                    example: 5.0
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /musicbands-util/genres-unique:
+    get:
+      tags:
+        - Доп операции
+      summary: Вернуть массив уникальных значений поля genre по всем объектам.
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genres'
+                xml:
+                  name: Answer
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  
+  
+  
+  
+  /musicbands:
+    post:
+      tags:
+        - Music Bands
+      summary: Добавить новый элемент
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MusicBandPostBody'
+      responses:
+        '201':
+          description: Успешный ответ
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MusicBand'
+                xml:
+                  name: Answer
+        '400':
+          description: Переданы данные, нарушающие ограничения целостности
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Music Bands
+      summary: Получить массив элементов
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы
+          required: false
+          schema:
+            type: integer
+            example: 0
+        - name: size
+          in: query
+          description: Размер страницы
+          required: false
+          schema:
+            type: integer
+            example: 10
+        - name: sort
+          in: query
+          description: Поле для сортировки
+          required: false
+          schema:
+            type: string
+            example: id
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MusicBands'
+                xml:
+                  name: Answer
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /musicbands/{id}:
+    get:
+      tags:
+        - Music Bands
+      summary: Получить элемент по ИД
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор элемента
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MusicBand'
+        '400':
+          description: Переданы данные, нарушающие ограничения целостности
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Элемент не найден
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Music Bands
+      summary: Обновить элемент
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор элемента
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MusicBandPostBody'
+            examples:
+              example1:
+                summary: Пример запроса
+                value:
+                  id: 1
+                  name: "Updated Band 1"
+                  coordinates:
+                    x: 12
+                    y: 25.0
+                  creationDate: "2023-03-01T15:00:00Z"
+                  numberOfParticipants: 4
+                  description: "Updated Description of Band 1"
+                  establishmentDate: "2022-02-01"
+                  genre: POST_PUNK
+                  bestAlbum:
+                    name: "Updated Best Album 1"
+                    tracks: 11
+                    length: 50
+                    sales: 9000
+      responses:
+        '200':
+          description: Успешное обновление
+        '404':
+          description: Элемент не найден
+        '400':
+          description: Переданы данные, нарушающие ограничения целостности
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Music Bands
+      summary: Удалить элемент
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор элемента
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Успешное удаление
+        '404':
+          description: Элемент не найден
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Переданы данные, нарушающие ограничения целостности
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Возврат кода ошибки, тела и сообщения.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    MusicBands:
+      type: array
+      items:
+        type: object
+        properties:
+          Musicband-1:
+            $ref: '#/components/schemas/MusicBand'
+          Musicband-2:
+            $ref: '#/components/schemas/MusicBand'
+      xml:
+        name: MusicBand
+    
+    
+    Genres:
+      type: array
+      items:
+        type: object
+        properties:
+          Musicband-1:
+            $ref: '#/components/schemas/MusicGenre'
+          Musicband-2:
+            $ref: '#/components/schemas/MusicGenre'
+      xml:
+        name: MusicBand
+    
+    MusicBand:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+        numberOfParticipants:
+          type: integer
+        description:
+          type: string
+        establishmentDate:
+          type: string
+          format: date
+        genre:
+          $ref: '#/components/schemas/MusicGenre'
+        bestAlbum:
+          $ref: '#/components/schemas/Album'
+      required:
+        - name
+        - coordinates
+        - creationDate
+        - numberOfParticipants
+        - establishmentDate
+        - genre
+        - bestAlbum
+      example:
+        id: 1
+        name: "Example Band 1"
+        coordinates:
+          x: 10
+          y: 20.5
+        creationDate: "2023-01-01T12:00:00Z"
+        numberOfParticipants: 5
+        description: "Description of Example Band 1"
+        establishmentDate: "2022-01-01"
+        genre: BLUES
+        bestAlbum:
+          name: "Best Album 1"
+          tracks: 10
+          length: 45
+          sales: 10000
+    
+    MusicBandPostBody:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        numberOfParticipants:
+          type: integer
+        description:
+          type: string
+        establishmentDate:
+          type: string
+          format: date
+        genre:
+          $ref: '#/components/schemas/MusicGenre'
+        bestAlbum:
+          $ref: '#/components/schemas/Album'
+      example:
+        name: "Example Band 1"
+        coordinates:
+          x: 10
+          y: 20.5
+        numberOfParticipants: 5
+        description: "Description of Example Band 1"
+        establishmentDate: "2022-01-01"
+        genre: BLUES
+        bestAlbum:
+          name: "Best Album 1"
+          tracks: 10
+          length: 45
+          sales: 10000
+
+    Coordinates:
+      type: object
+      properties:
+        x:
+          type: number
+          minimum: -949.0
+        y:
+          type: integer
+          minimum: -447
+      example:
+        x: 10.0
+        y: 20
+
+    Album:
+      type: object
+      properties:
+        name:
+          type: string
+        tracks:
+          type: integer
+        length:
+          type: integer
+        sales:
+          type: integer
+      example:
+        name: "Best Album 1"
+        tracks: 10
+        length: 45
+        sales: 10000
+
+    MusicGenre:
+      type: string
+      enum:
+        - BLUES
+        - PUNK_ROCK
+        - POST_PUNK
+      example: BLUES
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 500
+        message:
+          type: string
+          example: Серверу хана.
+        time:
+          type: string
+          format: date-time
+          example: 2023-09-19T00:00:09Z
