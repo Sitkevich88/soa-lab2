@@ -1,1 +1,3 @@
-rootProject.name = "lab1" //todo rename to soa-lab
+rootProject.name = "soa-lab"
+include("util_service")
+include("bands_service")

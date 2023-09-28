@@ -1,0 +1,13 @@
+server:
+  port: 7010
+  servlet:
+    context-path: /grammy
+    session:
+      timeout: 600s
+  error:
+    include-message: always
+
+spring:
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss

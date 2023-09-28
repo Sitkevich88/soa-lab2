@@ -19,6 +19,8 @@ configurations {
     }
 }
 
+task("prepareKotlinBuildScriptModel"){}
+
 repositories {
     mavenCentral()
 }
@@ -29,16 +31,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    
+
     implementation("org.modelmapper:modelmapper:2.4.5")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
-    
+
     implementation("org.hibernate:hibernate-core:5.6.14.Final")
     implementation("org.hibernate:hibernate-entitymanager:5.6.14.Final")
     implementation("org.hibernate.validator:hibernate-validator:6.1.6.Final")
 
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
-    
+
     annotationProcessor("org.projectlombok:lombok")
 }

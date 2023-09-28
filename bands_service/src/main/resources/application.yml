@@ -1,7 +1,7 @@
 server:
   port: 7008
   servlet:
-    context-path: / #todo /api/v1
+    context-path: /
     session:
       timeout: 600s
   error:
