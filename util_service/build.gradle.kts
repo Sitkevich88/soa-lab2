@@ -23,13 +23,15 @@ task("prepareKotlinBuildScriptModel"){}
 
 repositories {
     mavenCentral()
-}
+}   
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web"){
+        exclude(module = "spring-boot-starter-tomcat")
+    }
+    //implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
-
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
