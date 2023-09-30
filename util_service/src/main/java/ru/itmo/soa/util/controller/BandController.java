@@ -18,7 +18,7 @@ public class BandController {
     }
     
     @PostMapping(path = "/{id}/singles/add")
-    public MusicBandDTO addSingle(@PathVariable long id, AlbumDTO album) throws IOException {
+    public MusicBandDTO addSingle(@PathVariable long id, @RequestBody AlbumDTO album) throws IOException {
         return grammyService.addSingle(id, album);
     }
 
