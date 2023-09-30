@@ -52,8 +52,11 @@ public class GrammyService {
     }
 
     public MusicBandDTO addSingle(long bandId, AlbumDTO album) throws IOException {
+        var band = new MusicBandDTO();
+        band.setBestAlbum(album);
+        
         var body = RequestBody.create(
-                mapper.writeValueAsString(album), 
+                mapper.writeValueAsString(band), 
                 MediaType.parse("application/xml; charset=utf-8")
         );
         var request = new Request.Builder()
@@ -63,7 +66,7 @@ public class GrammyService {
                 .patch(body)
                 .build();
         var response = client.newCall(request).execute();
-        var band = mapper.readValue(response.body().string(), MusicBandDTO.class);
+        band = mapper.readValue(response.body().string(), MusicBandDTO.class);
 
         return band;
     }
