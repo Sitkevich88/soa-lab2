@@ -15,7 +15,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:8320/music
+    url: jdbc:postgresql://postgres:5432/music
     username: zhmot
     password: secretische
     driver-class-name: org.postgresql.Driver

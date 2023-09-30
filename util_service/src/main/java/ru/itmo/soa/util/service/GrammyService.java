@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Service
 public class GrammyService {
-    public static final String BASE_URL = "http://localhost:7008";
+    public static final String BASE_URL = "https://localhost:7008";
     public static final MediaType XML
             = MediaType.get("application/xml; charset=utf-8");
     public final ObjectMapper mapper;
@@ -37,8 +37,7 @@ public class GrammyService {
         var bandChanges = new NumberOfParticipantsDTO();
         bandChanges.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
         var body = RequestBody.create(
-                mapper.writeValueAsString(bandChanges), 
-                MediaType.parse("application/xml; charset=utf-8")
+                mapper.writeValueAsString(bandChanges), XML
         );
         request = new Request.Builder()
                 .url(BASE_URL + "/musicbands/" + bandId)
@@ -57,8 +56,7 @@ public class GrammyService {
         changes.setBestAlbum(album);
         
         var body = RequestBody.create(
-                mapper.writeValueAsString(changes), 
-                MediaType.parse("application/xml; charset=utf-8")
+                mapper.writeValueAsString(changes), XML
         );
         var request = new Request.Builder()
                 .url(BASE_URL + "/musicbands/" + bandId)
