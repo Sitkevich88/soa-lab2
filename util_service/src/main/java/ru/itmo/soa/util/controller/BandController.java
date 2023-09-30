@@ -1,9 +1,11 @@
 package ru.itmo.soa.util.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.soa.util.dto.AlbumDTO;
+import ru.itmo.soa.util.dto.MusicBandDTO;
 import ru.itmo.soa.util.service.GrammyService;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin("*") //todo remove it
@@ -16,12 +18,12 @@ public class BandController {
     }
     
     @PostMapping(path = "/{id}/singles/add")
-    public ResponseEntity<?> addSingle(@PathVariable long id, AlbumDTO album){
+    public MusicBandDTO addSingle(@PathVariable long id, AlbumDTO album) throws IOException {
         return grammyService.addSingle(id, album);
     }
 
     @PostMapping(path = "/{id}/participants/add")
-    public ResponseEntity<?> addParticipant(@PathVariable long id){
+    public MusicBandDTO addParticipant(@PathVariable long id) throws IOException {
         return grammyService.addParticipant(id);
     }
 }
