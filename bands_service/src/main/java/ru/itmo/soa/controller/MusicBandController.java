@@ -43,6 +43,11 @@ public class MusicBandController {
         return musicBandService.updateMusicBand(id, musicBandDTO);
     }
 
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<MusicBand> patchMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO) {
+        return musicBandService.patchMusicBand(id, musicBandDTO);
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteMusicBand(@PathVariable long id) {
         return musicBandService.deleteMusicBand(id);

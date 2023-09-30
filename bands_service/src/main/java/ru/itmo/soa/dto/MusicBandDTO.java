@@ -15,7 +15,7 @@ public class MusicBandDTO {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private CoordinatesDTO coordinates; //Поле не может быть null
     private java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private int numberOfParticipants; //Значение поля должно быть больше 0
+    private Integer numberOfParticipants; //Значение поля должно быть больше 0
     private String description; //Поле может быть null
     private java.time.LocalDate establishmentDate; //Поле не может быть null
     private MusicGenre genre; //Поле не может быть null

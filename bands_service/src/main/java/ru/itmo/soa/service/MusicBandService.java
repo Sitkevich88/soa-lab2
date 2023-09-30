@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
 import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.entity.MusicGenre;
+import ru.itmo.soa.mapper.MusicBandMapper;
 import ru.itmo.soa.repo.MusicBandRepository;
 
 import java.time.DateTimeException;
@@ -25,11 +26,13 @@ public class MusicBandService {
     private static final Logger logger = LoggerFactory.getLogger(MusicBandService.class);
     private final MusicBandRepository musicBandRepository;
     private final ModelMapper modelMapper;
+    private final MusicBandMapper patcher;
 
     @Autowired
-    public MusicBandService(MusicBandRepository musicBandRepository, ModelMapper modelMapper) {
+    public MusicBandService(MusicBandRepository musicBandRepository, ModelMapper modelMapper, MusicBandMapper patcher) {
         this.musicBandRepository = musicBandRepository;
         this.modelMapper = modelMapper;
+        this.patcher = patcher;
     }
 
     public Page<MusicBand> getAllMusicBands(Pageable pageable) {
@@ -109,6 +112,23 @@ public class MusicBandService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
+        }
+    }
+
+    public ResponseEntity<MusicBand> patchMusicBand(long id, MusicBandDTO musicBandDTO) {
+        var bandOptional = musicBandRepository.findById(id);
+        if (bandOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
+        }
+        var musicBand = bandOptional.get();
+        patcher.updateMusicBandFromDto(musicBand, musicBandDTO);
+
+        try {
+            musicBand = musicBandRepository.save(musicBand);
+            return ResponseEntity.ok(musicBand);
+        } catch (Throwable e) {
+            logger.warn("Cannot patch musicBand", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "MusicBand is invalid");
         }
     }
 }

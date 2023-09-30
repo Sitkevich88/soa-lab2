@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("org.modelmapper:modelmapper:2.4.5")
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
     implementation("org.hibernate:hibernate-core:5.6.14.Final")
@@ -42,5 +43,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
 
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
     annotationProcessor("org.projectlombok:lombok")
 }
