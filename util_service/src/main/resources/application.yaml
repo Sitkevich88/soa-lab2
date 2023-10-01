@@ -7,15 +7,16 @@ server:
   error:
     include-message: always
   ssl:
+    enabled: true
+    
     key-store-type: PKCS12
-    key-store: classpath:keystore/baeldung.p12
+    key-store: classpath:keystore/util.p12
     key-store-password: 123456
-    key-alias: baeldung
-    enabled: true 
-
-trust:
-  store: classpath:keystore/baeldung.p12
-  password: 123456
+    key-alias: util
+    
+    trust-store-type: PKCS12
+    trust-store: classpath:truststore/bands.p12
+    trust-store-password: 123456
 
 spring:
   mvc:

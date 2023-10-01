@@ -15,9 +15,19 @@ services:
       - postgres_data:/var/lib/postgresql/data
   bands:
     container_name: bands
-    image: 'bands:v1'
+    build:
+      context: bands_service
+      dockerfile: Dockerfile
     restart: no
     ports:
       - "7008:7008"
+  util:
+    container_name: util
+    build:
+      context: util_service
+      dockerfile: Dockerfile
+    restart: no
+    ports:
+      - "7010:7010"
 volumes:
   postgres_data:
