@@ -7,6 +7,7 @@ import ru.itmo.soa.util.dto.AlbumDTO;
 import ru.itmo.soa.util.dto.AlbumDTO2;
 import ru.itmo.soa.util.dto.MusicBandDTO;
 import ru.itmo.soa.util.dto.NumberOfParticipantsDTO;
+import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 
@@ -16,10 +17,11 @@ public class GrammyService {
     public static final MediaType XML
             = MediaType.get("application/xml; charset=utf-8");
     public final ObjectMapper mapper;
-    public final OkHttpClient client = new OkHttpClient();
+    public final OkHttpClient client;
 
-    public GrammyService(ObjectMapper mapper) {
+    public GrammyService(ObjectMapper mapper, OkHttpClient client) {
         this.mapper = mapper;
+        this.client = client;
     }
 
     public MusicBandDTO addParticipant(long bandId) throws IOException {

@@ -31,11 +31,12 @@ dependencies {
     }
     //implementation("org.springframework.boot:spring-boot-starter")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("com.squareup.okhttp:okhttp:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
+    implementation("org.apache.httpcomponents:httpcore:4.4.16")
+
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
