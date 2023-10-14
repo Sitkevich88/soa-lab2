@@ -39,9 +39,9 @@ public class MusicBandService {
         this.patcher = patcher;
     }
 
-    public Page<MusicBand> getAllMusicBands(Pageable pageable, String search) {
+    public Page<MusicBand> getAllMusicBands(Pageable pageable, String filter) {
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?)");
-        Matcher matcher = pattern.matcher(search);
+        Matcher matcher = pattern.matcher(filter);
         
         if (matcher.find()) {
             final var spec = new MusicBandSpecification(

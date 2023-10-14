@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -11,6 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CoordinatesDTO {
+    @NotNull
     private Long x; //Поле не может быть null
+    
+    @NotNull
+    @DecimalMax("967.0")
     private Double y; //Максимальное значение поля: 967, Поле не может быть null
 }

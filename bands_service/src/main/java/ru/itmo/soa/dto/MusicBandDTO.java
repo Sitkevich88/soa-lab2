@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.soa.entity.MusicGenre;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -12,12 +15,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MusicBandDTO {
+    @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
+    
+    @NotNull
     private CoordinatesDTO coordinates; //Поле не может быть null
-    private java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    
+    @Positive
     private Integer numberOfParticipants; //Значение поля должно быть больше 0
+    
     private String description; //Поле может быть null
+    
+    @NotNull
     private java.time.LocalDate establishmentDate; //Поле не может быть null
+    
+    @NotNull
     private MusicGenre genre; //Поле не может быть null
+    
+    @NotNull
     private AlbumDTO bestAlbum; //Поле не может быть null
 }

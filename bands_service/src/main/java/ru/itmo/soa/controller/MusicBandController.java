@@ -9,6 +9,8 @@ import ru.itmo.soa.dto.MusicBandDTO;
 import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.service.MusicBandService;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin("*") //todo remove it
 @RequestMapping("musicbands")
@@ -24,10 +26,10 @@ public class MusicBandController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "sort", defaultValue = "id") String sort,
-            @RequestParam(value = "search", defaultValue = "") String search
+            @RequestParam(value = "search", defaultValue = "") String filter
     ) {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sort));
-        return musicBandService.getAllMusicBands(pageable, search);
+        return musicBandService.getAllMusicBands(pageable, filter);
     }
 
     @GetMapping(path = "/{id}")
@@ -36,17 +38,17 @@ public class MusicBandController {
     }
 
     @PostMapping
-    public ResponseEntity<MusicBand> createMusicBand(@RequestBody MusicBandDTO musicBandDTO) {
+    public ResponseEntity<MusicBand> createMusicBand(@Valid @RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.createMusicBand(musicBandDTO);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO) {
+    public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @Valid @RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.updateMusicBand(id, musicBandDTO);
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<MusicBand> patchMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO) {
+    public ResponseEntity<MusicBand> patchMusicBand(@PathVariable long id, @Valid @RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.patchMusicBand(id, musicBandDTO);
     }
 
