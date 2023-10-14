@@ -11,15 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
+import ru.itmo.soa.spec.SearchCriteria;
 import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.entity.MusicGenre;
 import ru.itmo.soa.mapper.MusicBandMapper;
 import ru.itmo.soa.repo.MusicBandRepository;
+import ru.itmo.soa.spec.MusicBandSpecification;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MusicBandService {
@@ -35,7 +39,17 @@ public class MusicBandService {
         this.patcher = patcher;
     }
 
-    public Page<MusicBand> getAllMusicBands(Pageable pageable) {
+    public Page<MusicBand> getAllMusicBands(Pageable pageable, String search) {
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?)");
+        Matcher matcher = pattern.matcher(search);
+        
+        if (matcher.find()) {
+            final var spec = new MusicBandSpecification(
+                    new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3))
+            );
+            return musicBandRepository.findAll(spec, pageable);
+        }
+        
         return musicBandRepository.findAll(pageable);
     }
 

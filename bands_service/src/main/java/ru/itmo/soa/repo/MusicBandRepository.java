@@ -1,5 +1,6 @@
 package ru.itmo.soa.repo;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import ru.itmo.soa.entity.MusicBand;
@@ -8,7 +9,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 //todo validators: https://www.baeldung.com/spring-data-rest-validators
-public interface MusicBandRepository extends PagingAndSortingRepository<MusicBand, Long> {
+public interface MusicBandRepository extends PagingAndSortingRepository<MusicBand, Long>,
+        JpaSpecificationExecutor<MusicBand> {
     @Query("SELECT AVG(e.numberOfParticipants) FROM MusicBand e")
     Double findAverageNumberOfParticipants();
 

@@ -23,9 +23,11 @@ public class MusicBandController {
     public Page<MusicBand> getAllMusicBands(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "sort", defaultValue = "id") String sort) {
+            @RequestParam(name = "sort", defaultValue = "id") String sort,
+            @RequestParam(value = "search", defaultValue = "") String search
+    ) {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sort));
-        return musicBandService.getAllMusicBands(pageable);
+        return musicBandService.getAllMusicBands(pageable, search);
     }
 
     @GetMapping(path = "/{id}")
