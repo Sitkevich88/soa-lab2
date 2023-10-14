@@ -15,23 +15,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MusicBandDTO {
-    @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
-    
-    @NotNull
     private CoordinatesDTO coordinates; //Поле не может быть null
-    
-    @Positive
     private Integer numberOfParticipants; //Значение поля должно быть больше 0
-    
     private String description; //Поле может быть null
-    
-    @NotNull
     private java.time.LocalDate establishmentDate; //Поле не может быть null
-    
-    @NotNull
     private MusicGenre genre; //Поле не может быть null
-    
-    @NotNull
     private AlbumDTO bestAlbum; //Поле не может быть null
 }

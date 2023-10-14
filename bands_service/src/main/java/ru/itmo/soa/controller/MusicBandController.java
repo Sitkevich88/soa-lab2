@@ -61,7 +61,7 @@ public class MusicBandController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<MusicBand> patchMusicBand(@PathVariable long id, @Valid @RequestBody MusicBandDTO musicBandDTO) {
+    public ResponseEntity<MusicBand> patchMusicBand(@PathVariable long id, @RequestBody MusicBandDTO musicBandDTO) {
         return musicBandService.patchMusicBand(id, musicBandDTO);
     }
 
