@@ -18,19 +18,19 @@ public class MusicBandSpecification implements Specification<MusicBand> {
 
     @Override
     public Predicate toPredicate(Root<MusicBand> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-        if (criteria.getOperation().equalsIgnoreCase(">")) {
+        if (criteria.getOperation().equals(">")) {
             return builder.greaterThan(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString());
+                    root.get(criteria.getKey()), criteria.getValue().toString());
         }
-        else if (criteria.getOperation().equalsIgnoreCase("<")) {
+        else if (criteria.getOperation().equals("<")) {
             return builder.lessThan(
-                    root.<String> get(criteria.getKey()), criteria.getValue().toString());
+                    root.get(criteria.getKey()), criteria.getValue().toString());
         }
-        else if (criteria.getOperation().equalsIgnoreCase(":")) {
+        else if (criteria.getOperation().equals(":")) {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return builder.like( 
                         builder.lower(
-                                root.<String>get(criteria.getKey())
+                                root.get(criteria.getKey())
                         ), "%" + criteria.getValue() + "%"
                 );
             } else {

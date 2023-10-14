@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchCriteria {
+public class SearchCriteria<T> {
     private String key;
     private String operation;
-    private Object value;
+    private T value;
 }

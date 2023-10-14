@@ -44,6 +44,10 @@ public class MusicBandService {
         Matcher matcher = pattern.matcher(filter);
         
         if (matcher.find()) {
+            var field = matcher.group(1);
+            if (!field.equals("id") && !field.equals("name") && !field.equals("numberOfParticipants") && !field.equals("establishmentDate") && !field.equals("genre")){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid filtering parameter");
+            }
             final var spec = new MusicBandSpecification(
                     new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3))
             );
