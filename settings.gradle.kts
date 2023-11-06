@@ -1,3 +1,5 @@
 rootProject.name = "soa-lab"
-include("util_service")
 include("bands_service")
+
+include("util_service")
+include("discovery")

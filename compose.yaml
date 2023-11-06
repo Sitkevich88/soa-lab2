@@ -23,11 +23,21 @@ services:
       - "7008:7008"
   util:
     container_name: util
+    depends_on: 
+      - discovery
     build:
       context: util_service
       dockerfile: Dockerfile
     restart: no
     ports:
       - "7010:7010"
+  discovery:
+    container_name: discovery
+    build:
+      context: discovery
+      dockerfile: Dockerfile
+    restart: no
+    ports:
+      - "8761:8761"
 volumes:
   postgres_data:
