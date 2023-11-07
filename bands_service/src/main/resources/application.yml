@@ -37,3 +37,8 @@ logging:
     org:
       springframework:
         security: DEBUG
+        
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka

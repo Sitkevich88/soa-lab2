@@ -6,16 +6,16 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @Configuration
 @EnableJpaRepositories
 @EntityScan
 @SpringBootApplication
+@EnableEurekaClient
 @EnableTransactionManagement
 public class SoaApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(SoaApplication.class, args);
     }
-
 }
