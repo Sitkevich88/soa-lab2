@@ -39,6 +39,9 @@ logging:
         security: DEBUG
         
 eureka:
+  instance:
+    metadata-map:
+      zone: ru-1
   client:
     service-url:
       defaultZone: http://discovery:8761/eureka

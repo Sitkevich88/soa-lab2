@@ -1,0 +1,24 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: gateway
+
+eureka:
+  instance:
+    metadata-map:
+      zone: ru-1
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka
+
+zuul:
+  routes:
+#    utils:
+#      path: /grammy/**
+#      service-id: util
+#      url: https://util:7010/grammy
+    bands:
+      path: /**
+      service-id: bands

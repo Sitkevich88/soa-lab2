@@ -9,18 +9,17 @@ services:
       POSTGRES_DB: music
       POSTGRES_USER: zhmot
       POSTGRES_PASSWORD: secretische
-    ports:
-      - "8320:5432"
+    #ports:
+    #  - "8320:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
   bands:
-    container_name: bands
     build:
       context: bands_service
       dockerfile: Dockerfile
+    deploy:
+      replicas: 2
     restart: no
-    ports:
-      - "7008:7008"
   util:
     container_name: util
     depends_on: 
@@ -29,8 +28,8 @@ services:
       context: util_service
       dockerfile: Dockerfile
     restart: no
-    ports:
-      - "7010:7010"
+    #ports:
+    #  - "7010:7010"
   discovery:
     container_name: discovery
     build:
@@ -39,5 +38,14 @@ services:
     restart: no
     ports:
       - "8761:8761"
+  gateway:
+    container_name: gateway
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    restart: no
+    ports:
+      - "8765:8765"
+
 volumes:
   postgres_data:

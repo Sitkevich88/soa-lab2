@@ -32,6 +32,9 @@ dependencies {
         exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.10.RELEASE")
+    //implementation("com.netflix.ribbon:ribbon-eureka:2.7.18")
+    
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
@@ -47,4 +50,8 @@ configure<DependencyManagementExtension> {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.8")
     }
+}
+
+tasks.register<Wrapper>("wrapper") {
+    gradleVersion = "8.2.1"
 }

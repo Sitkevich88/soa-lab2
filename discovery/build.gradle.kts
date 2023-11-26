@@ -37,3 +37,7 @@ configure<DependencyManagementExtension> {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.8")
     }
 }
+
+tasks.register<Wrapper>("wrapper") {
+    gradleVersion = "8.2.1"
+}
