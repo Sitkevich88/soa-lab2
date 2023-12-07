@@ -4,13 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Data
+
 @Entity
-@AllArgsConstructor
 @Table(name = "coordinates")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Coordinates implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +26,4 @@ public class Coordinates implements Serializable {
     @DecimalMax("967.0")
     @Column(name = "y", nullable = false)
     private Double y; //Максимальное значение поля: 967, Поле не может быть null
-
-    public Coordinates() {
-
-    }
 }

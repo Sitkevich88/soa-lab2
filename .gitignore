@@ -35,3 +35,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+/wildfly-27.0.0.Final/

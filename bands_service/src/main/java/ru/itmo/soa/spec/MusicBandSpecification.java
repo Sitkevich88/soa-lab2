@@ -1,7 +1,7 @@
 package ru.itmo.soa.spec;
 
+import entity.MusicBand;
 import org.springframework.data.jpa.domain.Specification;
-import ru.itmo.soa.entity.MusicBand;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

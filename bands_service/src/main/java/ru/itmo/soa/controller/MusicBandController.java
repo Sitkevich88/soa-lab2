@@ -1,5 +1,6 @@
 package ru.itmo.soa.controller;
 
+import entity.MusicBand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
-import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.service.MusicBandService;
 
 import javax.validation.Valid;

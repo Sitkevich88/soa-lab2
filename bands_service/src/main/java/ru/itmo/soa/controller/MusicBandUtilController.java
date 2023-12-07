@@ -1,8 +1,8 @@
 package ru.itmo.soa.controller;
 
+import entity.MusicGenre;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.soa.entity.MusicGenre;
 import ru.itmo.soa.service.MusicBandService;
 
 import java.util.List;

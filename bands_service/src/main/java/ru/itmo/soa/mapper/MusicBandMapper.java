@@ -1,8 +1,8 @@
 package ru.itmo.soa.mapper;
 
+import entity.MusicBand;
 import org.mapstruct.*;
 import ru.itmo.soa.dto.MusicBandDTO;
-import ru.itmo.soa.entity.MusicBand;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MusicBandMapper {

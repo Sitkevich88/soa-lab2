@@ -1,23 +1,21 @@
-package ru.itmo.soa.entity;
+package entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "music_band")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString
-@XmlRootElement
-public class MusicBand {
+public class MusicBand implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

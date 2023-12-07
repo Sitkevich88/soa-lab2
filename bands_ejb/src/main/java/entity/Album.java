@@ -1,26 +1,24 @@
-package ru.itmo.soa.entity;
+package entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "album")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@XmlRootElement
-public class Album {
+public class Album implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
     private Integer id;
 
     @NotBlank
@@ -39,7 +37,6 @@ public class Album {
     @Column(name = "sales", nullable = false)
     private Integer sales; //Значение поля должно быть больше 0
 
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private MusicBand musicBand;
 
