@@ -53,9 +53,15 @@ public class MusicBandEjb implements MusicBandBean {
 
     @Override
     public Optional<MusicBand> findById(long id) {
-        final MusicBand musicBand = entityManager.find(MusicBand.class, id);
+        Query query = entityManager.createQuery("SELECT mb FROM MusicBand mb where mb.id = :id");
+        query.setParameter("id", id);
+        List<MusicBand> musicBands = query.getResultList();
 
-        return Optional.of(musicBand);
+        if (musicBands.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(musicBands.get(0));
+        }
     }
 
     @Override
