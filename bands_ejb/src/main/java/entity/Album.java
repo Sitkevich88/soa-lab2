@@ -40,7 +40,7 @@ public class Album implements Serializable {
     @Column(name = "sales", nullable = false)
     private Integer sales; //Значение поля должно быть больше 0
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private MusicBand musicBand;
 

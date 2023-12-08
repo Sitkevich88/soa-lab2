@@ -77,7 +77,11 @@ public class MusicBandEjb implements MusicBandBean {
 
     @Override
     public void deleteById(long id) {
-        Query query = entityManager.createQuery("DELETE FROM MusicBand s WHERE s.id = :id");
+        Query query = entityManager.createQuery("UPDATE Album a SET a.musicBand.id = NULL WHERE a.musicBand.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+
+        query = entityManager.createQuery("DELETE FROM MusicBand s WHERE s.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }
@@ -98,9 +102,17 @@ public class MusicBandEjb implements MusicBandBean {
 
     @Override
     public void deleteByEstablishmentDate(LocalDate localDate) {
-        Query query = entityManager.createQuery("DELETE FROM MusicBand s WHERE s.establishmentDate = :date");
-
+        Query query = entityManager.createQuery("SELECT id FROM MusicBand s WHERE s.establishmentDate = :date");
         query.setParameter("date", localDate);
+        List<Long> musicBandsIds = query.getResultList();
+
+        query = entityManager.createQuery("UPDATE Album a SET a.musicBand.id = NULL WHERE a.musicBand.id in :ids");
+        query.setParameter("ids", musicBandsIds);
+        query.executeUpdate();
+
+        query = entityManager.createQuery("DELETE FROM MusicBand s WHERE s.id in :ids");
+
+        query.setParameter("ids", musicBandsIds);
         query.executeUpdate();
     }
 }
