@@ -39,22 +39,24 @@ public class MusicBandService {
         this.musicBandBean = musicBandBean;
     }
 
-    public Page<MusicBand> getAllMusicBands(Pageable pageable, String filter) {
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?)");
-        Matcher matcher = pattern.matcher(filter);
+    public List<MusicBand> getAllMusicBands(int page, int size, String sort, String filter) {
+        StringBuilder name = new StringBuilder();
+        StringBuilder sign = new StringBuilder();
+        StringBuilder value = new StringBuilder();
 
-        if (matcher.find()) {
-            var field = matcher.group(1);
-            if (!field.equals("id") && !field.equals("name") && !field.equals("numberOfParticipants") && !field.equals("establishmentDate") && !field.equals("genre")){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid filtering parameter");
+        for (char c : filter.toCharArray()) {
+            if (!sign.toString().equals("")) {
+                value.append(c);
+            } else {
+                if (c == '>' || c == '<' || c == '=') {
+                    sign.append(c);
+                } else {
+                    name.append(c);
+                }
             }
-            final var spec = new MusicBandSpecification(
-                    new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3))
-            );
-            return musicBandBean.findAll(spec, pageable);
         }
 
-        return musicBandBean.findAll(pageable);
+        return musicBandBean.findAll(page, size, sort, name.toString(), sign.toString(), value.toString());
     }
 
     public ResponseEntity<MusicBand> createMusicBand(MusicBandDTO musicBandDTO) {

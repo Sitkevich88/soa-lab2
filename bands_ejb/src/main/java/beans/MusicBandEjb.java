@@ -17,8 +17,33 @@ import java.util.Optional;
 @Remote(MusicBandBean.class)
 @Stateless(name = "MusicBandEjb")
 public class MusicBandEjb implements MusicBandBean {
-    @PersistenceContext(unitName="db_unit")
+    @PersistenceContext(unitName = "db_unit")
     private EntityManager entityManager;
+
+    @Override
+    public List<MusicBand> findAll(int page, int size, String sort, String fieldName, String sign, String value) {
+        String baseRequest = "SELECT mb FROM MusicBand mb ";
+
+        if (!fieldName.equals("") && !sign.equals("")) {
+            baseRequest += "WHERE :filter_field :sign :filter_value ";
+        }
+
+        if (!sort.equals("")) {
+            baseRequest += "ORDER BY :sort_field ";
+        }
+
+        Query query = entityManager.createQuery(baseRequest);
+
+        query.setParameter("filter_field", fieldName);
+        query.setParameter("sort_field", sign);
+        query.setParameter("sort_field", value);
+        query.setParameter("sort_field", "mb." + sort);
+
+        query.setMaxResults(size);
+        query.setFirstResult(page * size);
+
+        return query.getResultList();
+    }
 
     @Override
     public MusicBand save(MusicBand musicBand) {
