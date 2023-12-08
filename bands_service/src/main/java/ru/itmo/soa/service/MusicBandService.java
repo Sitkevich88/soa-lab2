@@ -76,11 +76,10 @@ public class MusicBandService {
     public ResponseEntity<MusicBand> getMusicBand(long id) {
         final var musicBand = musicBandBean.findById(id);
 
-        return musicBand
-                .map(ResponseEntity::ok)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found")
-                );
+        if (musicBand == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
+        }
+        return ResponseEntity.ok(musicBand);
     }
 
     public ResponseEntity<?> deleteMusicBand(long id) {
@@ -137,10 +136,10 @@ public class MusicBandService {
 
     public ResponseEntity<MusicBand> patchMusicBand(long id, MusicBandDTO musicBandDTO) {
         var bandOptional = musicBandBean.findById(id);
-        if (bandOptional.isEmpty()) {
+        if (bandOptional == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
-        var musicBand = bandOptional.get();
+        var musicBand = bandOptional;
         patcher.updateMusicBandFromDto(musicBand, musicBandDTO);
 
         try {

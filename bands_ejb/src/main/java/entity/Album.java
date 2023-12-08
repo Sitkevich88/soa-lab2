@@ -1,8 +1,10 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@XmlRootElement
 public class Album implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,8 @@ public class Album implements Serializable {
     @Column(name = "sales", nullable = false)
     private Integer sales; //Значение поля должно быть больше 0
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JsonIgnore
     private MusicBand musicBand;
 
     @Override

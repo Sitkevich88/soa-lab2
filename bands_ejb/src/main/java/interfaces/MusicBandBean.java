@@ -11,7 +11,7 @@ public interface MusicBandBean {
 
     MusicBand save(MusicBand musicBand);
 
-    Optional<MusicBand> findById(long id);
+    MusicBand findById(long id);
 
     boolean existsById(long id);
 

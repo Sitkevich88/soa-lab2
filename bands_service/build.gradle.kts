@@ -33,10 +33,14 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations:2.2.15")
     implementation("org.modelmapper:modelmapper:3.1.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.5")
+    implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
+
+
     implementation("org.wildfly:wildfly-ejb-client-bom:30.0.0.Final")
 
     implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
-    implementation("com.example:bands_ejb:7.0")
+    implementation("com.example:bands_ejb:7.6")
     runtimeOnly("org.postgresql:postgresql")
 
     implementation("org.mapstruct:mapstruct:1.5.5.Final")

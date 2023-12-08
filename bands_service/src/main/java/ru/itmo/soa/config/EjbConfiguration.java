@@ -19,7 +19,7 @@ public class EjbConfiguration {
     public Context context() throws NamingException {
         Properties jndiProps = new Properties();
         jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, WildFlyInitialContextFactory.class.getName());
-        jndiProps.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
+        jndiProps.put(Context.PROVIDER_URL, "remote+http://localhost:8180");
         return new InitialContext(jndiProps);
     }
 

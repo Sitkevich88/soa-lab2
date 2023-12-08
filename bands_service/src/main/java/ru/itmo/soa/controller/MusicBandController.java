@@ -3,6 +3,7 @@ package ru.itmo.soa.controller;
 import entity.MusicBand;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -46,7 +47,7 @@ public class MusicBandController {
         return new PageImpl<>(musicBands, pageable, musicBands.size());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<MusicBand> getMusicBand(@PathVariable long id) {
         return musicBandService.getMusicBand(id);
     }
