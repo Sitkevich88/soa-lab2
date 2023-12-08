@@ -1,13 +1,12 @@
-//import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 
 plugins {
-    java
-    id("org.springframework.boot") version "2.5.0"
-    //id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("java")
+    id("org.springframework.boot") version "2.7.15"
 }
 
-//apply(plugin = "org.springframework.boot")
-//apply(plugin = "io.spring.dependency-management")
+apply(plugin = "org.springframework.boot")
+apply(plugin = "io.spring.dependency-management")
 
 group = "ru.itmo.soa"
 version = "0.0.1"
@@ -30,17 +29,15 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    //implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-    //implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.7.RELEASE")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 }
 
-
-/*configure<DependencyManagementExtension> {
+configure<DependencyManagementExtension> {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.3")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.8")
     }
-}*/
+}
 
 tasks.register<Wrapper>("wrapper") {
-    gradleVersion = "6.0.1"
+    gradleVersion = "8.2.1"
 }
