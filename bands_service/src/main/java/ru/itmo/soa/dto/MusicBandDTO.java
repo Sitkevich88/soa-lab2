@@ -1,13 +1,10 @@
 package ru.itmo.soa.dto;
 
+import entity.MusicGenre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itmo.soa.entity.MusicGenre;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement

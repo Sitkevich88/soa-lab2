@@ -1,17 +1,17 @@
 package ru.itmo.soa.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import entity.MusicBand;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
-import ru.itmo.soa.entity.MusicBand;
 import ru.itmo.soa.service.MusicBandService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -40,12 +40,14 @@ public class MusicBandController {
         if (!sort.equals("id") && !sort.equals("name") && !sort.equals("numberOfParticipants") && !sort.equals("establishmentDate") && !sort.equals("genre")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid sorting parameter");
         }
-        
+
+        List<MusicBand> musicBands = musicBandService.getAllMusicBands(page, size, sort, filter);
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sort));
-        return musicBandService.getAllMusicBands(pageable, filter);
+
+        return new PageImpl<>(musicBands, pageable, musicBands.size());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<MusicBand> getMusicBand(@PathVariable long id) {
         return musicBandService.getMusicBand(id);
     }

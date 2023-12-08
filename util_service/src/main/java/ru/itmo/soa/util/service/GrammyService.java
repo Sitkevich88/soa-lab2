@@ -13,8 +13,8 @@ import java.io.IOException;
 
 @Service
 public class GrammyService {
-    private static final String BASE_URL = "https://bands:7008";
-    private static final MediaType XML
+    public static final String BASE_URL = "http://bands:7008";
+    public static final MediaType XML
             = MediaType.get("application/xml; charset=utf-8");
     private final ObjectMapper mapper;
     private final OkHttpClient client;

@@ -1,5 +1,8 @@
 package ru.itmo.soa.service;
 
+import entity.MusicBand;
+import entity.MusicGenre;
+import interfaces.MusicBandBean;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.itmo.soa.dto.MusicBandDTO;
-import ru.itmo.soa.spec.SearchCriteria;
-import ru.itmo.soa.entity.MusicBand;
-import ru.itmo.soa.entity.MusicGenre;
 import ru.itmo.soa.mapper.MusicBandMapper;
-import ru.itmo.soa.repo.MusicBandRepository;
 import ru.itmo.soa.spec.MusicBandSpecification;
+import ru.itmo.soa.spec.SearchCriteria;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -28,33 +28,35 @@ import java.util.regex.Pattern;
 @Service
 public class MusicBandService {
     private static final Logger logger = LoggerFactory.getLogger(MusicBandService.class);
-    private final MusicBandRepository musicBandRepository;
     private final ModelMapper modelMapper;
     private final MusicBandMapper patcher;
+    private final MusicBandBean musicBandBean;
 
     @Autowired
-    public MusicBandService(MusicBandRepository musicBandRepository, ModelMapper modelMapper, MusicBandMapper patcher) {
-        this.musicBandRepository = musicBandRepository;
+    public MusicBandService(ModelMapper modelMapper, MusicBandMapper patcher, MusicBandBean musicBandBean) {
         this.modelMapper = modelMapper;
         this.patcher = patcher;
+        this.musicBandBean = musicBandBean;
     }
 
-    public Page<MusicBand> getAllMusicBands(Pageable pageable, String filter) {
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?)");
-        Matcher matcher = pattern.matcher(filter);
-        
-        if (matcher.find()) {
-            var field = matcher.group(1);
-            if (!field.equals("id") && !field.equals("name") && !field.equals("numberOfParticipants") && !field.equals("establishmentDate") && !field.equals("genre")){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid filtering parameter");
+    public List<MusicBand> getAllMusicBands(int page, int size, String sort, String filter) {
+        StringBuilder name = new StringBuilder();
+        StringBuilder sign = new StringBuilder();
+        StringBuilder value = new StringBuilder();
+
+        for (char c : filter.toCharArray()) {
+            if (!sign.toString().equals("")) {
+                value.append(c);
+            } else {
+                if (c == '>' || c == '<' || c == '=') {
+                    sign.append(c);
+                } else {
+                    name.append(c);
+                }
             }
-            final var spec = new MusicBandSpecification(
-                    new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3))
-            );
-            return musicBandRepository.findAll(spec, pageable);
         }
-        
-        return musicBandRepository.findAll(pageable);
+
+        return musicBandBean.findAll(page, size, sort, name.toString(), sign.toString(), value.toString());
     }
 
     public ResponseEntity<MusicBand> createMusicBand(MusicBandDTO musicBandDTO) {
@@ -63,7 +65,7 @@ public class MusicBandService {
         musicBand.getBestAlbum().setMusicBand(musicBand);
 
         try {
-            musicBand = musicBandRepository.save(musicBand);
+            musicBand = musicBandBean.save(musicBand);
             return ResponseEntity.status(HttpStatus.CREATED).body(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot create musicBand", e);
@@ -72,18 +74,17 @@ public class MusicBandService {
     }
 
     public ResponseEntity<MusicBand> getMusicBand(long id) {
-        final var musicBand = musicBandRepository.findById(id);
+        final var musicBand = musicBandBean.findById(id);
 
-        return musicBand
-                .map(ResponseEntity::ok)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found")
-                );
+        if (musicBand == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
+        }
+        return ResponseEntity.ok(musicBand);
     }
 
     public ResponseEntity<?> deleteMusicBand(long id) {
-        if (musicBandRepository.existsById(id)) {
-            musicBandRepository.deleteById(id);
+        if (musicBandBean.existsById(id)) {
+            musicBandBean.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
@@ -91,7 +92,7 @@ public class MusicBandService {
     }
 
     public ResponseEntity<MusicBand> updateMusicBand(long id, MusicBandDTO musicBandDTO) {
-        if (!musicBandRepository.existsById(id)) {
+        if (!musicBandBean.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
 
@@ -101,7 +102,7 @@ public class MusicBandService {
         musicBand.getBestAlbum().setMusicBand(musicBand);
 
         try {
-            musicBand = musicBandRepository.save(musicBand);
+            musicBand = musicBandBean.save(musicBand);
             return ResponseEntity.ok(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot update musicBand", e);
@@ -110,7 +111,7 @@ public class MusicBandService {
     }
 
     public Double getAverageNumberOfParticipants() {
-        return musicBandRepository.findAverageNumberOfParticipants();
+        return musicBandBean.findAverageNumberOfParticipants();
     }
 
     public List<MusicGenre> getAllGenres() {
@@ -125,8 +126,8 @@ public class MusicBandService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Establishment Date is invalid");
         }
 
-        if (musicBandRepository.existsByEstablishmentDate(establishmentDate)) {
-            musicBandRepository.deleteByEstablishmentDate(establishmentDate);
+        if (musicBandBean.existsByEstablishmentDate(establishmentDate)) {
+            musicBandBean.deleteByEstablishmentDate(establishmentDate);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
@@ -134,15 +135,15 @@ public class MusicBandService {
     }
 
     public ResponseEntity<MusicBand> patchMusicBand(long id, MusicBandDTO musicBandDTO) {
-        var bandOptional = musicBandRepository.findById(id);
-        if (bandOptional.isEmpty()) {
+        var bandOptional = musicBandBean.findById(id);
+        if (bandOptional == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
-        var musicBand = bandOptional.get();
+        var musicBand = bandOptional;
         patcher.updateMusicBandFromDto(musicBand, musicBandDTO);
 
         try {
-            musicBand = musicBandRepository.save(musicBand);
+            musicBand = musicBandBean.save(musicBand);
             return ResponseEntity.ok(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot patch musicBand", e);

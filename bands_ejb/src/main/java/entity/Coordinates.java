@@ -1,14 +1,13 @@
-package ru.itmo.soa.entity;
+package entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 
 @Entity
@@ -16,13 +15,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString
 @XmlRootElement
-public class Coordinates {
+public class Coordinates implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
     private Integer id;
 
     @Column(name = "x", nullable = false)

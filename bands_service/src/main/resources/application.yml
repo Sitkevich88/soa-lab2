@@ -6,37 +6,25 @@ server:
       timeout: 600s
   error:
     include-message: always
-  ssl:
-    key-store-type: PKCS12
-    key-store: classpath:keystore/bands.p12
-    key-store-password: 123456
-    key-alias: bands
-    enabled: true
 
 spring:
   application:
     name: bands
-  datasource:
-    url: jdbc:postgresql://postgres:5432/music
-    username: zhmot
-    password: secretische
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:8320/music
+#    username: zhmot
+#    password: secretische
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
         
 eureka:
   instance:
