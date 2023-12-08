@@ -35,8 +35,8 @@ public class MusicBandEjb implements MusicBandBean {
         Query query = entityManager.createQuery(baseRequest);
 
         query.setParameter("filter_field", fieldName);
-        query.setParameter("sort_field", sign);
-        query.setParameter("sort_field", value);
+        query.setParameter("sign", sign);
+        query.setParameter("filter_value", value);
         query.setParameter("sort_field", "mb." + sort);
 
         query.setMaxResults(size);
