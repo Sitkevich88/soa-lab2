@@ -1,13 +1,16 @@
 package beans;
 
+import dto.MusicBandDTO;
 import entity.MusicBand;
 import interfaces.MusicBandBean;
 import jakarta.ejb.Remote;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.Data;
+import mapper.MusicBandMapper;
 import org.jboss.ejb3.annotation.Pool;
 
 import java.time.LocalDate;
@@ -116,6 +119,12 @@ public class MusicBandEjb implements MusicBandBean {
 
         query.setParameter("ids", musicBandsIds);
         query.executeUpdate();
+    }
+
+    @Override
+    public void update(MusicBandDTO source, MusicBand target) {
+        MusicBandMapper.updateMusicBandFromDto(source, target);
+        entityManager.merge(target);
     }
 }
 

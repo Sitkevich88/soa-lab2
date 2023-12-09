@@ -1,5 +1,6 @@
 package interfaces;
 
+import dto.MusicBandDTO;
 import entity.MusicBand;
 
 import java.time.LocalDate;
@@ -22,4 +23,6 @@ public interface MusicBandBean {
     boolean existsByEstablishmentDate(LocalDate localDate);
 
     void deleteByEstablishmentDate(LocalDate localDate);
+
+    void update(MusicBandDTO source, MusicBand target);
 }

@@ -1,5 +1,6 @@
 package ru.itmo.soa.service;
 
+import dto.MusicBandDTO;
 import entity.MusicBand;
 import entity.MusicGenre;
 import interfaces.MusicBandBean;
@@ -13,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.itmo.soa.dto.MusicBandDTO;
+
 import ru.itmo.soa.mapper.MusicBandMapper;
 import ru.itmo.soa.spec.MusicBandSpecification;
 import ru.itmo.soa.spec.SearchCriteria;
@@ -92,7 +93,8 @@ public class MusicBandService {
     }
 
     public ResponseEntity<MusicBand> updateMusicBand(long id, MusicBandDTO musicBandDTO) {
-        if (!musicBandBean.existsById(id)) {
+        var bandOptional = musicBandBean.findById(id);
+        if (bandOptional == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
 
@@ -140,10 +142,10 @@ public class MusicBandService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "MusicBand is not found");
         }
         var musicBand = bandOptional;
-        patcher.updateMusicBandFromDto(musicBand, musicBandDTO);
+//        patcher.updateMusicBandFromDto(musicBand, musicBandDTO);
 
         try {
-            musicBand = musicBandBean.save(musicBand);
+            musicBandBean.update(musicBandDTO, musicBand);
             return ResponseEntity.ok(musicBand);
         } catch (Throwable e) {
             logger.warn("Cannot patch musicBand", e);

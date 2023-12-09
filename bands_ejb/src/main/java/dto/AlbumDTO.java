@@ -1,18 +1,20 @@
-package ru.itmo.soa.dto;
+package dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
 
 @XmlRootElement
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumDTO {
+public class AlbumDTO implements Serializable {
     @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
     

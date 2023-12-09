@@ -1,18 +1,20 @@
-package ru.itmo.soa.dto;
+package dto;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.NotNull;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+
 
 @XmlRootElement
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoordinatesDTO {
+public class CoordinatesDTO implements Serializable {
     @NotNull
     private Long x; //Поле не может быть null
     

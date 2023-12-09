@@ -35,6 +35,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation("org.springframework.cloud:spring-cloud-config-client")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.15")
     implementation("org.modelmapper:modelmapper:3.1.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
@@ -48,7 +49,7 @@ dependencies {
     implementation("org.wildfly:wildfly-ejb-client-bom:30.0.0.Final")
 
     implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
-    implementation("com.example:bands_ejb:1.0.0")
+    implementation("com.example:bands_ejb:1.0.7")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
     runtimeOnly("org.postgresql:postgresql")

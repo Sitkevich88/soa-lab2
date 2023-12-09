@@ -33,6 +33,8 @@ dependencies {
     }
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.10.RELEASE")
+    implementation("org.springframework.cloud:spring-cloud-config-client")
+
     //implementation("com.netflix.ribbon:ribbon-eureka:2.7.18")
     
     implementation("com.squareup.okhttp3:okhttp:4.11.0")

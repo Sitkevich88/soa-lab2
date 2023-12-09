@@ -1,16 +1,17 @@
 package ru.itmo.soa.controller;
 
+import dto.MusicBandDTO;
 import entity.MusicBand;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.itmo.soa.dto.MusicBandDTO;
+
 import ru.itmo.soa.service.MusicBandService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -59,7 +60,7 @@ public class MusicBandController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<MusicBand> updateMusicBand(@PathVariable long id, @Valid @RequestBody MusicBandDTO musicBandDTO) {
-        return musicBandService.updateMusicBand(id, musicBandDTO);
+        return musicBandService.patchMusicBand(id, musicBandDTO);
     }
 
     @PatchMapping(path = "/{id}")
