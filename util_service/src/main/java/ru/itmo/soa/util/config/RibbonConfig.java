@@ -1,5 +1,7 @@
 package ru.itmo.soa.util.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +13,12 @@ public class RibbonConfig {
 
     @Bean
     @LoadBalanced
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplate(@Autowired ObjectMapper mapper) {
         var template =  new RestTemplate();
-        template.getMessageConverters().add(new MappingJackson2XmlHttpMessageConverter());
+        var messageConverter = new MappingJackson2XmlHttpMessageConverter();
+        
+        messageConverter.setObjectMapper(mapper);
+        template.getMessageConverters().add(messageConverter);
         
         return template;
     }
