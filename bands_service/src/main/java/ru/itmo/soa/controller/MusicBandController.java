@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin("*") //todo remove it
+@CrossOrigin(origins = {"http://localhost:443","http://localhost:7010"})
 @RequestMapping("musicbands")
 public class MusicBandController {
     private final MusicBandService musicBandService;
