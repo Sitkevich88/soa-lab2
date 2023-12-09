@@ -6,7 +6,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>bands_ejb</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
     <name>bands_ejb</name>
 
     <properties>

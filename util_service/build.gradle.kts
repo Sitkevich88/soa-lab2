@@ -39,6 +39,9 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     implementation("org.apache.httpcomponents:httpcore:4.4.16")
+    implementation("org.modelmapper:modelmapper:2.4.5")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
+
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

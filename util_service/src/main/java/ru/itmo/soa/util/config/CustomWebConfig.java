@@ -23,15 +23,5 @@ public class CustomWebConfig implements WebMvcConfigurer {
         configurer.defaultContentType(MediaType.APPLICATION_XML);
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        var dateTimeModule = new SimpleModule();
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        dateTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
 
-        return new XmlMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(new JavaTimeModule())
-                .registerModule(dateTimeModule);
-    }
 }

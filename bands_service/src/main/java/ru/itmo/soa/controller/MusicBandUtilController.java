@@ -8,7 +8,7 @@ import ru.itmo.soa.service.MusicBandService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:443","http://localhost:7010"})
+@CrossOrigin(origins = {"*"})
 @RequestMapping("musicbands-util")
 public class MusicBandUtilController {
     private final MusicBandService musicBandService;

@@ -49,7 +49,10 @@ public class MusicBandService {
             if (!sign.toString().equals("")) {
                 value.append(c);
             } else {
-                if (c == '>' || c == '<' || c == '=') {
+                if (c == '>' || c == '<' || c == ':') {
+                    if (c == ':') {
+                        c = '=';
+                    }
                     sign.append(c);
                 } else {
                     name.append(c);
@@ -146,7 +149,7 @@ public class MusicBandService {
 
         try {
             musicBandBean.update(musicBandDTO, musicBand);
-            return ResponseEntity.ok(musicBand);
+            return ResponseEntity.ok(musicBandBean.findById(id));
         } catch (Throwable e) {
             logger.warn("Cannot patch musicBand", e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "MusicBand is invalid");

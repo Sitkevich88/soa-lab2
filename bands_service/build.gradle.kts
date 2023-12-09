@@ -49,7 +49,7 @@ dependencies {
     implementation("org.wildfly:wildfly-ejb-client-bom:30.0.0.Final")
 
     implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
-    implementation("com.example:bands_ejb:1.0.7")
+    implementation("com.example:bands_ejb:1.0.9")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
     runtimeOnly("org.postgresql:postgresql")
