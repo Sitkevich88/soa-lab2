@@ -1,74 +1,42 @@
 package ru.itmo.soa.util.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import ru.itmo.soa.util.dto.AlbumDTO;
 import ru.itmo.soa.util.dto.AlbumDTO2;
 import ru.itmo.soa.util.dto.MusicBandDTO;
 import ru.itmo.soa.util.dto.NumberOfParticipantsDTO;
-import okhttp3.OkHttpClient;
-
-import java.io.IOException;
 
 @Service
 public class GrammyService {
-    public static final String BASE_URL = "http://localhost:7008";
-    public static final MediaType XML
-            = MediaType.get("application/xml; charset=utf-8");
-    private final ObjectMapper mapper;
-    private final OkHttpClient client;
 
-    public GrammyService(ObjectMapper mapper, OkHttpClient client) {
-        this.mapper = mapper;
-        this.client = client;
+    @Value("${bands.api.base}")
+    private String BASE_URL;
+
+    private final RestTemplate restTemplate;
+
+    public GrammyService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public MusicBandDTO addParticipant(long bandId) throws IOException {
+    public MusicBandDTO addParticipant(long bandId) {
         //get it
-        Request request = new Request.Builder()
-                .url(BASE_URL + "/musicbands/" + bandId)
-                .addHeader("Content-Type", "application/xml")
-                .addHeader("Accept", "application/xml")
-                .get()
-                .build();
-        Response response = client.newCall(request).execute();
-        MusicBandDTO band = mapper.readValue(response.body().string(), MusicBandDTO.class);
-        
+        var url = BASE_URL + "/musicbands/" + bandId;
+        MusicBandDTO band = restTemplate.getForEntity(url, MusicBandDTO.class).getBody();
+
         //update it
-        var bandChanges = new NumberOfParticipantsDTO();
-        bandChanges.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
-        var body = RequestBody.create(
-                mapper.writeValueAsString(bandChanges), XML
-        );
-        request = new Request.Builder()
-                .url(BASE_URL + "/musicbands/" + bandId)
-                .addHeader("Content-Type", "application/xml")
-                .addHeader("Accept", "application/xml")
-                .patch(body)
-                .build();
-        response = client.newCall(request).execute();
-        band = mapper.readValue(response.body().string(), MusicBandDTO.class);
-        
-        return band;
+        var changes = new NumberOfParticipantsDTO();
+        changes.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
+
+        return restTemplate.patchForObject(url, changes, MusicBandDTO.class);
     }
 
-    public MusicBandDTO addSingle(long bandId, AlbumDTO album) throws IOException {
+    public MusicBandDTO addSingle(long bandId, AlbumDTO album) {
+        var url = BASE_URL + "/musicbands/" + bandId;
         var changes = new AlbumDTO2();
         changes.setBestAlbum(album);
-        
-        var body = RequestBody.create(
-                mapper.writeValueAsString(changes), XML
-        );
-        var request = new Request.Builder()
-                .url(BASE_URL + "/musicbands/" + bandId)
-                .addHeader("Content-Type", "application/xml")
-                .addHeader("Accept", "application/xml")
-                .patch(body)
-                .build();
-        var response = client.newCall(request).execute();
-        var band = mapper.readValue(response.body().string(), MusicBandDTO.class);
 
-        return band;
+        return restTemplate.patchForObject(url, changes, MusicBandDTO.class);
     }
 }
