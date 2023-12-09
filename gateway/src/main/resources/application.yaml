@@ -4,6 +4,23 @@ server:
 spring:
   application:
     name: gateway
+  cloud:
+    gateway:
+      routes: 
+        - id: bands
+          uri: http://127.0.0.1:7008
+          predicates:
+            - Path=/bands/**
+          filters:
+            - RewritePath=/bands/(?<segment>.*), /$\{segment}
+        - id: util
+          uri: http://127.0.0.1:7010
+          predicates:
+            - Path=/util/**
+          filters:
+            - RewritePath=/util/(?<segment>.*), /$\{segment}
+      enabled: true
+
 
 eureka:
   instance:
@@ -11,14 +28,8 @@ eureka:
       zone: ru-1
   client:
     service-url:
-      defaultZone: http://discovery:8761/eureka
-
-zuul:
-  routes:
-#    utils:
-#      path: /grammy/**
-#      service-id: util
-#      url: https://util:7010/grammy
-    bands:
-      path: /**
-      service-id: bands
+      defaultZone: http://localhost:8761/eureka
+      
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
