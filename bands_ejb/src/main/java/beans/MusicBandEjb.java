@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.Data;
+import org.jboss.ejb3.annotation.Pool;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @Data
 @Remote(MusicBandBean.class)
 @Stateless(name = "MusicBandEjb")
+@Pool("slsb-strict-max-pool")
 public class MusicBandEjb implements MusicBandBean {
     @PersistenceContext(unitName = "db_unit")
     private EntityManager entityManager;
