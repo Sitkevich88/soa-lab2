@@ -13,38 +13,38 @@ services:
       - "8300:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  bands:
-    container_name: bands
-    build:
-      context: bands_service
-      dockerfile: Dockerfile
-    restart: no
-  util:
-    container_name: util
-    depends_on: 
-      - discovery
-    build:
-      context: util_service
-      dockerfile: Dockerfile
-    restart: no
-    ports:
-      - "7010:7010"
-  discovery:
-    container_name: discovery
-    build:
-      context: discovery
-      dockerfile: Dockerfile
-    restart: no
-    ports:
-      - "8761:8761"
-  gateway:
-    container_name: gateway
-    build:
-      context: gateway
-      dockerfile: Dockerfile
-    restart: no
-    ports:
-      - "8765:8765"
+#  bands:
+#    container_name: bands
+#    build:
+#      context: bands_service
+#      dockerfile: Dockerfile
+#    restart: no
+#  util:
+#    container_name: util
+#    depends_on: 
+#      - discovery
+#    build:
+#      context: util_service
+#      dockerfile: Dockerfile
+#    restart: no
+#    ports:
+#      - "7010:7010"
+#  discovery:
+#    container_name: discovery
+#    build:
+#      context: discovery
+#      dockerfile: Dockerfile
+#    restart: no
+#    ports:
+#      - "8761:8761"
+#  gateway:
+#    container_name: gateway
+#    build:
+#      context: gateway
+#      dockerfile: Dockerfile
+#    restart: no
+#    ports:
+#      - "8765:8765"
 
 volumes:
   postgres_data:

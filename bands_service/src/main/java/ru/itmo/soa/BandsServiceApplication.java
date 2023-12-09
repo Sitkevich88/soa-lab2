@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableTransactionManagement
-public class SoaApplication {
+public class BandsServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SoaApplication.class, args);
+        SpringApplication.run(BandsServiceApplication.class, args);
     }
 }

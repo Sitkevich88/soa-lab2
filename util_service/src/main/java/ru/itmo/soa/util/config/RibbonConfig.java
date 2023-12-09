@@ -1,27 +1,20 @@
-/*
 package ru.itmo.soa.util.config;
 
-import com.netflix.client.config.DefaultClientConfigImpl;
-import com.netflix.client.config.IClientConfig;
-import com.netflix.loadbalancer.IRule;
-import com.netflix.loadbalancer.RandomRule;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@RibbonClient(name = "bands")
 public class RibbonConfig {
 
     @Bean
-    public IClientConfig ribbonClientConfig() {
-        DefaultClientConfigImpl config = new DefaultClientConfigImpl();
-        config.loadProperties("bands");
-        return config;
+    @LoadBalanced
+    public RestTemplate restTemplate() {
+        var template =  new RestTemplate();
+        template.getMessageConverters().add(new MappingJackson2XmlHttpMessageConverter());
+        
+        return template;
     }
-
-    @Bean
-    public IRule ribbonRule() {
-        return new RandomRule();
-    }
-}*/
+}

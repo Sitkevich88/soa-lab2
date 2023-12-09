@@ -7,6 +7,7 @@ server:
   error:
     include-message: always
 
+
 spring:
   application:
     name: UTIL
@@ -18,3 +19,7 @@ spring:
     config:
       username: admin
       password: admin
+
+bands:
+  api:
+    base: http://BANDS
