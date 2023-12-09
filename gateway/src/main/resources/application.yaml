@@ -29,7 +29,6 @@ spring:
             - RewritePath=/util/(?<segment>.*), /$\{segment}
       enabled: true
 
-
 eureka:
   instance:
     metadata-map:
