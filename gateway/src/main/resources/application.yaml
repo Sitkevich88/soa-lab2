@@ -36,7 +36,7 @@ eureka:
       zone: ru-1
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8762/eureka
       
 logging:
   level:
