@@ -1,7 +1,7 @@
 server:
-  port: 7010
+  port: 7011
   servlet:
-    context-path: /grammy
+    context-path: /
     session:
       timeout: 600s
   error:
@@ -9,7 +9,7 @@ server:
 
 spring:
   application:
-    name: UTIL
+    name: UTIL_SOAP
   profiles:
     active: cfg
   config:
@@ -18,3 +18,7 @@ spring:
     config:
       username: admin
       password: admin
+      
+bands:
+  api:
+    base: BANDS

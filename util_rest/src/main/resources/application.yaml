@@ -1,0 +1,20 @@
+server:
+  port: 7010
+  servlet:
+    context-path: /grammy
+    session:
+      timeout: 600s
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: UTIL_REST
+  profiles:
+    active: cfg
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      username: admin
+      password: admin

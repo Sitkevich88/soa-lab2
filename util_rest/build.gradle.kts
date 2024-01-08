@@ -32,7 +32,6 @@ dependencies {
         exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-    //implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.10.RELEASE")
     implementation("org.springframework.cloud:spring-cloud-config-client")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
