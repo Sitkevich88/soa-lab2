@@ -12,21 +12,22 @@ import java.net.URISyntaxException;
 
 @Endpoint
 public class GrammyEndpoint {
+    private static final String NAMESPACE_URI = "http://localhost:7011";
     private final GrammyService grammyService;
 
     public GrammyEndpoint(GrammyService grammyService) {
         this.grammyService = grammyService;
     }
 
-    @PayloadRoot(localPart = "addSingle")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddSingeRequest")
     @ResponsePayload
-    public MusicBandDTO addSingle(@RequestPayload AddSingeRequest request) throws URISyntaxException {
-        return grammyService.addSingle(request);
+    public MusicBandDTO addSingle(@RequestPayload AddSingeRequest addSingeRequest) throws URISyntaxException {
+        return grammyService.addSingle(addSingeRequest);
     }
 
-    @PayloadRoot(localPart = "addParticipant")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddParticipantRequest")
     @ResponsePayload
-    public MusicBandDTO addParticipant(@RequestPayload AddParticipantRequest request) throws URISyntaxException {
-        return grammyService.addParticipant(request);
+    public MusicBandDTO addParticipant(@RequestPayload AddParticipantRequest addParticipantRequest) throws URISyntaxException {
+        return grammyService.addParticipant(addParticipantRequest);
     }
 }

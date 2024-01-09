@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:7011">
+    
+    <xs:simpleType name="MusicGenre">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BLUES"/>
+            <xs:enumeration value="PUNK_ROCK"/>
+            <xs:enumeration value="POST_PUNK"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="AlbumDTO">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="tracks" type="xs:long" />
+            <xs:element name="length" type="xs:long" />
+            <xs:element name="sales" type="xs:integer" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CoordinatesDTO">
+        <xs:sequence>
+            <xs:element name="x" type="xs:long" />
+            <xs:element name="y" type="xs:double" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MusicBandDTO">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="coordinates" type="CoordinatesDTO"/>
+            <xs:element name="creationDate" type="xs:dateTime" />
+            <xs:element name="numberOfParticipants" type="xs:long" />
+            <xs:element name="description" type="xs:string" />
+            <xs:element name="establishmentDate" type="xs:date" />
+            <xs:element name="genre" type="MusicGenre" />
+            <xs:element name="bestAlbum" type="AlbumDTO"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="AddSingeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bandId" type="xs:long" />
+                <xs:element name="album" type="AlbumDTO" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AddParticipantRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bandId" type="xs:long" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="MusicBandDTO" type="MusicBandDTO"/>
+    
+</xs:schema>

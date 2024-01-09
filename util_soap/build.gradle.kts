@@ -40,6 +40,7 @@ dependencies {
     implementation("org.apache.httpcomponents:httpcore:4.4.16")
     implementation("org.modelmapper:modelmapper:2.4.5")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
+    implementation("org.glassfish.jaxb:jaxb-runtime")
     
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
