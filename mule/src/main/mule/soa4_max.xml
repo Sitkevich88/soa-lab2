@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<http:listener-config name="HTTP_Listener_SOA_config" doc:name="HTTP Listener config" doc:id="0ec75403-0a8c-43ff-a7e3-ee31369329dc" basePath="/api">
+		<http:listener-connection host="0.0.0.0" port="9098" readTimeout="3000" />
+	</http:listener-config>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="e272989b-2747-4c9c-9275-6a94d2f1b1a5" >
+		<wsc:connection wsdlLocation="wsdl\vehicle.wsdl" service="SchemaPortService" port="SchemaPortSoap11" address="http://localhost:9099/api/ws" />
+	</wsc:config>
+	<wsc:config name="Web_Service_Consumer_Config1" doc:name="Web Service Consumer Config" doc:id="e6e91ec6-1a51-45f8-b5ee-d392cd6284f0" >
+		<wsc:connection wsdlLocation="wsdl\vehicle2.wsdl" service="SchemaPortService" port="SchemaPortSoap11" address="http://localhost:9099/api/ws" />
+	</wsc:config>
+	<flow name="getVehicle" doc:id="ad8c8889-5635-4cb1-b328-1dd3394c3a41" >
+		<http:listener doc:name="Listener" doc:id="9402826e-009a-4a18-9df8-c5c3a841c2b6" config-ref="HTTP_Listener_SOA_config" path="/{id}" allowedMethods="GET" >
+		</http:listener>
+		<ee:transform doc:name="Transform Message" doc:id="38e4bb37-e73a-4d26-a5a5-d94eca3b4cc0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	ns0#getVehicleRequest: {
+		ns0#id: attributes.uriParams.id
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="e5103715-594d-4747-84ac-17312170ed26" config-ref="Web_Service_Consumer_Config" operation="getVehicle"/>
+		<ee:transform doc:name="Transform Message1" doc:id="d999d49f-6ccb-4d8a-99fd-962a261f20ec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	id: payload.body.ns0#getVehicleResponse.ns0#id default 0,
+	name: payload.body.ns0#getVehicleResponse.ns0#name default "",
+	coordinates: {
+		x: payload.body.ns0#getVehicleResponse.ns0#coordinates.ns0#x default 0,
+		y: payload.body.ns0#getVehicleResponse.ns0#coordinates.ns0#y default 0
+	},
+	creationDate: payload.body.ns0#getVehicleResponse.ns0#creationDate as Number default 0,
+	enginePower: payload.body.ns0#getVehicleResponse.ns0#enginePower default 0,
+	"type": payload.body.ns0#getVehicleResponse.ns0#"type" default "",
+	fuelType: payload.body.ns0#getVehicleResponse.ns0#fuelType default "",
+	numberOfWheels: payload.body.ns0#getVehicleResponse.ns0#numberOfWheels default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="c75d65ea-a663-4c29-a36a-d7bce4a57950" />
+	</flow>
+	<flow name="deleteVehicle" doc:id="45d2110d-617a-4dea-a818-3e5aecb4a68e" >
+		<http:listener doc:name="Listener" doc:id="9499a690-db92-442b-8f97-e5aef9959d6a" config-ref="HTTP_Listener_SOA_config" path="/{id}" allowedMethods="DELETE"/>
+		<ee:transform doc:name="Transform Message" doc:id="704f583a-4ef5-4c01-ada8-878976b64555" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml skipNullOn = "everywhere"
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	ns0#deleteVehicleRequest: {
+		ns0#id: attributes.uriParams.id
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="238dad9a-f2f5-4519-ab48-3c8f36fb6579" config-ref="Web_Service_Consumer_Config" operation="deleteVehicle"/>
+		<ee:transform doc:name="Transform Message1" doc:id="923cd23b-d18d-44b3-95ce-75590d6c32a7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	id: payload.body.ns0#deleteVehicleResponse.ns0#id default 0,
+	name: payload.body.ns0#deleteVehicleResponse.ns0#name default "",
+	coordinates: {
+		x: payload.body.ns0#deleteVehicleResponse.ns0#coordinates.ns0#x default 0,
+		y: payload.body.ns0#deleteVehicleResponse.ns0#coordinates.ns0#y default 0
+	},
+	creationDate: payload.body.ns0#deleteVehicleResponse.ns0#creationDate as Number default 0,
+	enginePower: payload.body.ns0#deleteVehicleResponse.ns0#enginePower default 0,
+	"type": payload.body.ns0#deleteVehicleResponse.ns0#"type" default "",
+	fuelType: payload.body.ns0#deleteVehicleResponse.ns0#fuelType default "",
+	numberOfWheels: payload.body.ns0#deleteVehicleResponse.ns0#numberOfWheels default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ded18f1f-751b-45b0-9662-520bfe12ea21" />
+	</flow>
+	<flow name="createVehicle" doc:id="7dd28e04-7de9-4dc8-8d9e-26a957a21ef7" >
+		<http:listener doc:name="Listener" doc:id="18664f2a-a01a-49ec-b364-a553aad984eb" config-ref="HTTP_Listener_SOA_config" path="/ws" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="3827841e-56e9-4744-b431-7df5da51b20e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml skipNullOn = "everywhere"
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	ns0#createVehicleDtoRequest: {
+		ns0#name: payload.name,
+		ns0#coordinates: {
+			ns0#x: payload.coordinates.x as String,
+			ns0#y: payload.coordinates.y as String
+		},
+		ns0#creationDate: payload.creationDate,
+		ns0#enginePower: payload.enginePower,
+		ns0#"type": payload."type",
+		ns0#fuelType: payload.fuelType
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="bcf577e5-0546-4d04-a3a1-59d760c9ab7c" config-ref="Web_Service_Consumer_Config" operation="createVehicleDto"/>
+		<ee:transform doc:name="Transform Message" doc:id="4e1b06af-dbe4-4a4a-8815-5b173126133e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	id: payload.body.ns0#createVehicleDtoResponse.ns0#id default 0,
+	name: payload.body.ns0#createVehicleDtoResponse.ns0#name default "",
+	coordinates: {
+		x: payload.body.ns0#createVehicleDtoResponse.ns0#coordinates.ns0#x default 0,
+		y: payload.body.ns0#createVehicleDtoResponse.ns0#coordinates.ns0#y default 0
+	},
+	creationDate: payload.body.ns0#createVehicleDtoResponse.ns0#creationDate as Number default 0,
+	enginePower: payload.body.ns0#createVehicleDtoResponse.ns0#enginePower default 0,
+	"type": payload.body.ns0#createVehicleDtoResponse.ns0#"type" default "",
+	fuelType: payload.body.ns0#createVehicleDtoResponse.ns0#fuelType default "",
+	numberOfWheels: payload.body.ns0#createVehicleDtoResponse.ns0#numberOfWheels default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="00eb146e-4b7b-43fe-84a3-ed49bd81a3cf" />
+	</flow>
+	<flow name="deleteVehiclesByType" doc:id="65831e19-9514-444a-a01a-75a1c2de69f2" >
+		<http:listener doc:name="Listener" doc:id="3adfa05c-35e6-41fe-8d62-5b3643c951b9" config-ref="HTTP_Listener_SOA_config" path="/type/{type}" allowedMethods="DELETE" />
+		<wsc:consume doc:name="Consume" doc:id="bfeba34b-c1cb-4577-a31f-b545ff1eeb98" config-ref="Web_Service_Consumer_Config" operation="deleteVehicleByType"/>
+		<ee:transform doc:name="Transform Message" doc:id="b17e167b-abd6-4198-b96c-62a7f13b89ca" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	code: payload.body.ns0#deleteVehicleByTypeResponse.ns0#code
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="194d4b53-6143-4166-8612-aa169bfdb8ee" />
+	</flow>
+	<flow name="updateVehicle" doc:id="59b4b319-49e4-4724-ab48-cb80c36ce977" >
+		<http:listener doc:name="Listener" doc:id="fb196b23-947e-4808-af50-76a1c3358478" config-ref="HTTP_Listener_SOA_config" path="/ws" allowedMethods="PUT"/>
+		<ee:transform doc:name="Transform Message" doc:id="1e0423f9-ac78-4bd1-ac9d-6322864d4fb9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	ns0#updateVehicleDtoRequest: {
+		ns0#id: payload.id,
+		ns0#name: payload.name,
+		ns0#coordinates: {
+			ns0#x: payload.coordinates.x as String,
+			ns0#y: payload.coordinates.y as String
+		},
+		ns0#creationDate: payload.creationDate,
+		ns0#enginePower: payload.enginePower,
+		ns0#"type": payload."type",
+		ns0#fuelType: payload.fuelType
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="updateVehicleDto" doc:name="Consume" doc:id="93fff3b5-6bc9-4d4c-afba-ecfd906df551" config-ref="Web_Service_Consumer_Config" />
+		<ee:transform doc:name="Transform Message" doc:id="70060ebd-0124-4986-8f7c-c9b9687f8a1d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://com/example/vehicleService/catalog
+---
+{
+	id: payload.body.ns0#updateVehicleDtoResponse.ns0#id default 0,
+	name: payload.body.ns0#updateVehicleDtoResponse.ns0#name default "",
+	coordinates: {
+		x: payload.body.ns0#updateVehicleDtoResponse.ns0#coordinates.ns0#x default 0,
+		y: payload.body.ns0#updateVehicleDtoResponse.ns0#coordinates.ns0#y default 0
+	},
+	creationDate: payload.body.ns0#updateVehicleDtoResponse.ns0#creationDate as Number default 0,
+	enginePower: payload.body.ns0#updateVehicleDtoResponse.ns0#enginePower default 0,
+	"type": payload.body.ns0#updateVehicleDtoResponse.ns0#"type" default "",
+	fuelType: payload.body.ns0#updateVehicleDtoResponse.ns0#fuelType default "",
+	numberOfWheels: payload.body.ns0#updateVehicleDtoResponse.ns0#numberOfWheels default 0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="26ee4fe6-162e-4a5b-b366-ada8c5bfe9fb" />
+	</flow>
+</mule>

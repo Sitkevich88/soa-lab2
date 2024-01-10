@@ -1,12 +1,11 @@
 package ru.itmo.soa.util.soap.service;
 
+import io.spring.guides.gs_producing_web_service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.itmo.soa.util.soap.dto.*;
-import ru.itmo.soa.util.soap.soap_dto.request.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,11 +22,11 @@ public class GrammyService {
         this.restTemplate = restTemplate;
     }
 
-    public MusicBandDto addParticipant(AddParticipantRequest request) throws URISyntaxException {
+    public MusicBandDtoParticipants addParticipant(AddParticipantRequest request) throws URISyntaxException {
         var bandId = request.getBandId();
         //get it
         var url = BASE_URL + "/musicbands/" + bandId;
-        var band = restTemplate.getForEntity(url, MusicBandDto.class).getBody();
+        var band = restTemplate.getForEntity(url, MusicBandDtoParticipants.class).getBody();
 
         //update it
         var changes = new NumberOfParticipantsDto();
@@ -36,19 +35,19 @@ public class GrammyService {
         return restTemplate.exchange(new URI(url),
                 HttpMethod.PATCH,
                 new HttpEntity<>(changes),
-                MusicBandDto.class).getBody();
+                MusicBandDtoParticipants.class).getBody();
     }
 
-    public MusicBandDto addSingle(AddSingeRequest request) throws URISyntaxException {
+    public MusicBandDtoSingle addSingle(AddSingeRequest request) throws URISyntaxException {
         var bandId = request.getBandId();
         var album = request.getAlbum();
         var url = BASE_URL + "/musicbands/" + bandId;
-        var changes = new AlbumDTO2();
+        var changes = new AlbumDto2();
         changes.setBestAlbum(album);
 
         return restTemplate.exchange(new URI(url),
                 HttpMethod.PATCH,
                 new HttpEntity<>(changes),
-                MusicBandDto.class).getBody();
+                MusicBandDtoSingle.class).getBody();
     }
 }

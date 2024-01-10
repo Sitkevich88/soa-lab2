@@ -1,12 +1,14 @@
 package ru.itmo.soa.util.soap.endpoint;
 
+import io.spring.guides.gs_producing_web_service.AddParticipantRequest;
+import io.spring.guides.gs_producing_web_service.AddSingeRequest;
+import io.spring.guides.gs_producing_web_service.MusicBandDtoParticipants;
+import io.spring.guides.gs_producing_web_service.MusicBandDtoSingle;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.itmo.soa.util.soap.dto.MusicBandDto;
 import ru.itmo.soa.util.soap.service.GrammyService;
-import ru.itmo.soa.util.soap.soap_dto.request.*;
 
 import java.net.URISyntaxException;
 
@@ -21,16 +23,16 @@ public class GrammyEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addSingeRequest")
     @ResponsePayload
-    public MusicBandDto addSingle(@RequestPayload AddSingeRequest addSingeRequest) throws URISyntaxException {
-        var res = new MusicBandDto();
+    public MusicBandDtoSingle addSingle(@RequestPayload AddSingeRequest addSingeRequest) throws URISyntaxException {
+        var res = new MusicBandDtoSingle();
         res.setId(addSingeRequest.getBandId());
         return res;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addParticipantRequest")
     @ResponsePayload
-    public MusicBandDto addParticipant(@RequestPayload AddParticipantRequest addParticipantRequest) throws URISyntaxException {
-        var res = new MusicBandDto();
+    public MusicBandDtoParticipants addParticipant(@RequestPayload AddParticipantRequest addParticipantRequest) throws URISyntaxException {
+        var res = new MusicBandDtoParticipants();
         res.setId(addParticipantRequest.getBandId());
         return res;
     }
