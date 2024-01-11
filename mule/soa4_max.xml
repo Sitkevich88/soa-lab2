@@ -12,7 +12,9 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 		<http:listener-connection host="0.0.0.0" port="9098" readTimeout="3000" />
 	</http:listener-config>
 	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="e272989b-2747-4c9c-9275-6a94d2f1b1a5" >
-		<wsc:connection wsdlLocation="wsdl\vehicle.wsdl" service="SchemaPortService" port="SchemaPortSoap11" address="http://localhost:9099/api/ws" />
+		<wsc:connection wsdlLocation="wsdl\vehicle.wsdl" service="SchemaPortService" port="SchemaPortSoap11" address="http://localhost:9099/api/ws" >
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
 	</wsc:config>
 	<wsc:config name="Web_Service_Consumer_Config1" doc:name="Web Service Consumer Config" doc:id="e6e91ec6-1a51-45f8-b5ee-d392cd6284f0" >
 		<wsc:connection wsdlLocation="wsdl\vehicle2.wsdl" service="SchemaPortService" port="SchemaPortSoap11" address="http://localhost:9099/api/ws" />
@@ -24,6 +26,7 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
+ns ns00 http://schemas.xmlsoap.org/soap/envelope/
 ns ns0 http://com/example/vehicleService/catalog
 ---
 {
@@ -33,6 +36,7 @@ ns ns0 http://com/example/vehicleService/catalog
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="30f08ee1-f71c-4c0a-be71-2ac243d8a3f3" />
 		<wsc:consume doc:name="Consume" doc:id="e5103715-594d-4747-84ac-17312170ed26" config-ref="Web_Service_Consumer_Config" operation="getVehicle"/>
 		<ee:transform doc:name="Transform Message1" doc:id="d999d49f-6ccb-4d8a-99fd-962a261f20ec" >
 			<ee:message >

@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<http:listener-config name="sll_HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1eac180a-db1d-4ef0-a31c-0cf0aabc65f7" >
+		<http:listener-connection host="0.0.0.0" port="7021" />
+	</http:listener-config>
+	<wsc:config name="sll_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="1e67b591-ad78-455e-83fd-f7bcfe3e3097" >
+		<wsc:connection wsdlLocation="http://localhost:7011/ws/grammy.wsdl" service="GrammyPortService" port="GrammyPortSoap11" address="http://localhost:7011/ws" />
+	</wsc:config>
+	<flow name="addParticipants" doc:id="5bae0bcc-a56b-4e3b-a476-3af0b5e4a04a" >
+		<http:listener doc:name="Listener" doc:id="41beb179-eb40-4551-b17d-7fad62480c78" config-ref="sll_HTTP_Listener_config" path="/addParticipant/{id}" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="ae846a1f-4a35-4769-b5bb-4ea6fcb6e667" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml skipNullOn = "everywhere"
+ns ns0 http://spring.io/guides/gs-producing-web-service
+---
+{
+	ns0#addParticipantRequest: {
+		ns0#bandId: attributes.uriParams.id
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="addParticipant" doc:name="Consume" doc:id="334ab99a-c809-473c-81b4-857228412b02" config-ref="sll_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="0a98d097-0269-47f5-8064-04068f245ae1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+ns ns0 http://spring.io/guides/gs-producing-web-service
+
+output application/json
+---
+{
+	"id": payload.body.ns0#MusicBandDtoParticipants.ns0#id
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="b8492640-e969-4da4-bd88-c2f3c209f2b7" />
+	</flow>
+</mule>

@@ -30,7 +30,7 @@ public class GrammyService {
 
         //update it
         var changes = new NumberOfParticipantsDto();
-        changes.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
+//        changes.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
 
         return restTemplate.exchange(new URI(url),
                 HttpMethod.PATCH,

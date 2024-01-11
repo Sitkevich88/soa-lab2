@@ -11,12 +11,10 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
         <http:listener-connection host="0.0.0.0" port="45678">
         </http:listener-connection>
     </http:listener-config>
-    <wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="2aae44c3-252b-49f2-883d-82830aace35d" >
-        <wsc:connection wsdlLocation="http://localhost:1234/ws/isu.wsdl" service="IsuPortService" port="IsuPortSoap11" address="http://localhost:1234/ws" >
-            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
-        </wsc:connection>
-    </wsc:config>
-    <flow name="expellAll" doc:id="b5e3509b-859e-4113-bd52-0dbf1f70abd3" >
+    <wsc:config name="sll_Web_Service_Consumer_Config5" doc:name="Web Service Consumer Config" doc:id="e889a8fb-d610-4092-808d-f1a2b0758919" >
+		<wsc:connection wsdlLocation="grammy.wsdl" service="GrammyPortService" port="GrammyPortSoap11" address="http://localhost:7011/ws" />
+	</wsc:config>
+	<flow name="expellAll" doc:id="b5e3509b-859e-4113-bd52-0dbf1f70abd3" >
         <http:listener doc:name="Listener" doc:id="20f345c9-b045-49e1-b7ad-8ac03fc5269e" config-ref="HTTP_Listener_config" path="/groups/{groupId}/expel-all" allowedMethods="POST">
             <http:error-response >
                 <http:body ><![CDATA[#[payload]]]></http:body>
@@ -26,7 +24,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
         <ee:transform doc:name="Transform Message" doc:id="f83f4f82-e54e-46c0-97b1-5cf0779713b2" >
             <ee:message >
                 <ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
+output text/xml
 ns ns0 http://spring.io/guides/gs-producing-web-service
 ---
 {
@@ -36,7 +34,7 @@ ns ns0 http://spring.io/guides/gs-producing-web-service
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-        <wsc:consume doc:name="Consume" doc:id="070c7584-8143-4894-a7c9-ab8051611918" config-ref="Web_Service_Consumer_Config" operation="ExpelAll"/>
+        <wsc:consume doc:name="Consume" doc:id="070c7584-8143-4894-a7c9-ab8051611918" operation="ExpelAll"/>
         <ee:transform doc:name="Transform Message" doc:id="bf88dbe2-1f67-4d66-8c2d-7a497aa1aadd" >
             <ee:message >
                 <ee:set-payload ><![CDATA[%dw 2.0
@@ -90,7 +88,7 @@ ns ns0 http://spring.io/guides/gs-producing-web-service
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-        <wsc:consume doc:name="Consume" doc:id="48c730a6-e751-4296-b84b-46a5175fdc8d" config-ref="Web_Service_Consumer_Config" operation="changeEduForm"/>
+        <wsc:consume doc:name="Consume" doc:id="48c730a6-e751-4296-b84b-46a5175fdc8d" operation="changeEduForm"/>
         <ee:transform doc:name="Transform Message" doc:id="dd538be9-c4f2-40b0-8d7e-41d3a419924d" >
             <ee:message >
                 <ee:set-payload ><![CDATA[%dw 2.0

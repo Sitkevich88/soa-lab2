@@ -31,7 +31,7 @@ public class GrammyEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addParticipantRequest")
     @ResponsePayload
-    public MusicBandDtoParticipants addParticipant(@RequestPayload AddParticipantRequest addParticipantRequest) throws URISyntaxException {
+    public MusicBandDtoParticipants addParticipant(@RequestPayload AddParticipantRequest addParticipantRequest) throws URISyntaxException, InterruptedException {
         var res = new MusicBandDtoParticipants();
         res.setId(addParticipantRequest.getBandId());
         return res;

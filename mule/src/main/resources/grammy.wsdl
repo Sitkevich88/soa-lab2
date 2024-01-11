@@ -1,6 +1,6 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://localhost:7011" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://localhost:7011" targetNamespace="http://localhost:7011">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://spring.io/guides/gs-producing-web-service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://spring.io/guides/gs-producing-web-service" targetNamespace="http://spring.io/guides/gs-producing-web-service">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://localhost:7011">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
             <xs:simpleType name="MusicGenre">
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="BLUES"/>
@@ -8,76 +8,94 @@
                     <xs:enumeration value="POST_PUNK"/>
                 </xs:restriction>
             </xs:simpleType>
-            <xs:complexType name="AlbumDTO">
+            <xs:complexType name="AlbumDto">
                 <xs:sequence>
                     <xs:element name="name" type="xs:string"/>
                     <xs:element name="tracks" type="xs:long"/>
                     <xs:element name="length" type="xs:long"/>
-                    <xs:element name="sales" type="xs:integer"/>
+                    <xs:element name="sales" type="xs:int"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="CoordinatesDTO">
+            <xs:complexType name="AlbumDto2">
+                <xs:sequence>
+                    <xs:element name="bestAlbum" type="tns:AlbumDto"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CoordinatesDto">
                 <xs:sequence>
                     <xs:element name="x" type="xs:long"/>
                     <xs:element name="y" type="xs:double"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="MusicBandDTO">
+            <xs:complexType name="NumberOfParticipantsDto">
                 <xs:sequence>
-                    <xs:element name="id" type="xs:long"/>
-                    <xs:element name="name" type="xs:string"/>
-                    <xs:element name="coordinates" type="CoordinatesDTO"/>
-                    <xs:element name="creationDate" type="xs:dateTime"/>
-                    <xs:element name="numberOfParticipants" type="xs:long"/>
-                    <xs:element name="description" type="xs:string"/>
-                    <xs:element name="establishmentDate" type="xs:date"/>
-                    <xs:element name="genre" type="MusicGenre"/>
-                    <xs:element name="bestAlbum" type="AlbumDTO"/>
+                    <xs:element name="numberOfParticipants" type="xs:int"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:element name="AddSingeRequest">
+            <xs:element name="addSingeRequest">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="bandId" type="xs:long"/>
-                        <xs:element name="album" type="AlbumDTO"/>
+                        <xs:element name="album" type="tns:AlbumDto"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="AddParticipantRequest">
+            <xs:element name="addParticipantRequest">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="bandId" type="xs:long"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="MusicBandDTO" type="MusicBandDTO"/>
+            <xs:element name="MusicBandDtoParticipants">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:long"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MusicBandDtoSingle">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:long"/>
+                        <xs:element name="name" type="xs:string"/>
+                        <xs:element name="coordinates" type="tns:CoordinatesDto"/>
+                        <xs:element name="creationDate" type="xs:dateTime"/>
+                        <xs:element name="numberOfParticipants" type="xs:int"/>
+                        <xs:element name="description" type="xs:string"/>
+                        <xs:element name="establishmentDate" type="xs:date"/>
+                        <xs:element name="genre" type="tns:MusicGenre"/>
+                        <xs:element name="bestAlbum" type="tns:AlbumDto"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
     </wsdl:types>
-    <wsdl:message name="AddSingeRequest">
-        <wsdl:part element="tns:AddSingeRequest" name="AddSingeRequest"> </wsdl:part>
+    <wsdl:message name="addSingeRequest">
+        <wsdl:part element="tns:addSingeRequest" name="addSingeRequest"> </wsdl:part>
     </wsdl:message>
-    <wsdl:message name="AddParticipantRequest">
-        <wsdl:part element="tns:AddParticipantRequest" name="AddParticipantRequest"> </wsdl:part>
+    <wsdl:message name="addParticipantRequest">
+        <wsdl:part element="tns:addParticipantRequest" name="addParticipantRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:portType name="GrammyPort">
-        <wsdl:operation name="AddSinge">
-            <wsdl:input message="tns:AddSingeRequest" name="AddSingeRequest"> </wsdl:input>
+        <wsdl:operation name="addSinge">
+            <wsdl:input message="tns:addSingeRequest" name="addSingeRequest"> </wsdl:input>
         </wsdl:operation>
-        <wsdl:operation name="AddParticipant">
-            <wsdl:input message="tns:AddParticipantRequest" name="AddParticipantRequest"> </wsdl:input>
+        <wsdl:operation name="addParticipant">
+            <wsdl:input message="tns:addParticipantRequest" name="addParticipantRequest"> </wsdl:input>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="GrammyPortSoap11" type="tns:GrammyPort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="AddSinge">
+        <wsdl:operation name="addSinge">
             <soap:operation soapAction=""/>
-            <wsdl:input name="AddSingeRequest">
+            <wsdl:input name="addSingeRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
         </wsdl:operation>
-        <wsdl:operation name="AddParticipant">
+        <wsdl:operation name="addParticipant">
             <soap:operation soapAction=""/>
-            <wsdl:input name="AddParticipantRequest">
+            <wsdl:input name="addParticipantRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
         </wsdl:operation>
