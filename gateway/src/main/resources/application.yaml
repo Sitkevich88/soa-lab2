@@ -30,7 +30,7 @@ spring:
           filters:
             - RewritePath=/bands/(?<segment>.*), /$\{segment}
         - id: util
-          uri: http://127.0.0.1:7010
+          uri: http://127.0.0.1:43567
           predicates:
             - Path=/util/**
           filters:

@@ -1,6 +1,7 @@
 package ru.itmo.soa.util.soap.service;
 
 import io.spring.guides.gs_producing_web_service.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,9 +19,12 @@ public class GrammyService {
     private String BASE_URL;
 
     private final RestTemplate restTemplate;
+    
+    private final ModelMapper mapper;
 
-    public GrammyService(RestTemplate restTemplate) {
+    public GrammyService(RestTemplate restTemplate, ModelMapper mapper) {
         this.restTemplate = restTemplate;
+        this.mapper = mapper;
     }
 
     public MusicBandDtoParticipants addParticipant(AddParticipantRequest request) throws URISyntaxException {
@@ -31,12 +35,14 @@ public class GrammyService {
 
         //update it
         var changes = new NumberOfParticipantsDto();
-//        changes.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
+        changes.setNumberOfParticipants(band.getNumberOfParticipants() + 1);
 
-        return restTemplate.exchange(new URI(url),
+        band = restTemplate.exchange(new URI(url),
                 HttpMethod.PATCH,
                 new HttpEntity<>(changes),
-                MusicBandDtoParticipants.class).getBody();
+                MusicBandDto.class).getBody();
+        
+        return mapper.map(band, MusicBandDtoParticipants.class);
     }
 
     public MusicBandDtoSingle addSingle(AddSingeRequest request) throws URISyntaxException {
@@ -46,9 +52,11 @@ public class GrammyService {
         var changes = new AlbumDto2();
         changes.setBestAlbum(album);
 
-        return restTemplate.exchange(new URI(url),
+        var band = restTemplate.exchange(new URI(url),
                 HttpMethod.PATCH,
                 new HttpEntity<>(changes),
                 MusicBandDtoSingle.class).getBody();
+        
+        return mapper.map(band, MusicBandDtoSingle.class);
     }
 }
