@@ -21,4 +21,4 @@ spring:
       
 bands:
   api:
-    base: BANDS
+    base: http://BANDS

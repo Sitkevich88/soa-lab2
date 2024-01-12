@@ -6,6 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.itmo.soa.util.soap.dto.MusicBandDto;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,7 +27,7 @@ public class GrammyService {
         var bandId = request.getBandId();
         //get it
         var url = BASE_URL + "/musicbands/" + bandId;
-        var band = restTemplate.getForEntity(url, MusicBandDtoParticipants.class).getBody();
+        var band = restTemplate.getForEntity(url, MusicBandDto.class).getBody();
 
         //update it
         var changes = new NumberOfParticipantsDto();

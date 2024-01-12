@@ -12,19 +12,10 @@ import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-        "id",
-        "name",
-        "coordinates",
-        "creationDate",
-        "numberOfParticipants",
-        "description",
-        "establishmentDate",
-        "genre",
-        "bestAlbum"
-})
-@XmlRootElement(name = "musicBandDto")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@XmlRootElement
 public class MusicBandDto {
     private long id;
     private String name; //Поле не может быть null, Строка не может быть пустой

@@ -59,10 +59,10 @@
                 <xs:element name="id" type="xs:long"/>
                 <xs:element name="name" type="xs:string"/>
                 <xs:element name="coordinates" type="tns:CoordinatesDto"/>
-                <xs:element name="creationDate" type="xs:dateTime"/>
+                <xs:element name="creationDate" type="xs:string"/>
                 <xs:element name="numberOfParticipants" type="xs:int"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element name="establishmentDate" type="xs:date"/>
+                <xs:element name="establishmentDate" type="xs:string"/>
                 <xs:element name="genre" type="tns:MusicGenre"/>
                 <xs:element name="bestAlbum" type="tns:AlbumDto"/>
             </xs:sequence>
@@ -75,10 +75,10 @@
                 <xs:element name="id" type="xs:long"/>
                 <xs:element name="name" type="xs:string"/>
                 <xs:element name="coordinates" type="tns:CoordinatesDto"/>
-                <xs:element name="creationDate" type="xs:dateTime"/>
+                <xs:element name="creationDate" type="xs:string"/>
                 <xs:element name="numberOfParticipants" type="xs:int"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element name="establishmentDate" type="xs:date"/>
+                <xs:element name="establishmentDate" type="xs:string"/>
                 <xs:element name="genre" type="tns:MusicGenre"/>
                 <xs:element name="bestAlbum" type="tns:AlbumDto"/>
             </xs:sequence>

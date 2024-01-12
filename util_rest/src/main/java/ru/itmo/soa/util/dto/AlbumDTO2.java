@@ -1,4 +1,4 @@
-package ru.itmo.soa.util.soap.dto;
+package ru.itmo.soa.util.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
